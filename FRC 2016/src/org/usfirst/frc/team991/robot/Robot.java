@@ -6,8 +6,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+import org.usfirst.frc.team991.robot.commands.FlywheelDSControl;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Flywheels flywheel = new Flywheels();
+	public static Flywheels flywheel;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -35,10 +38,14 @@ public class Robot extends IterativeRobot {
 //        chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
 //        SmartDashboard.putData("Auto mode", chooser);
+		flywheel = new Flywheels();
 		
 		server = CameraServer.getInstance();
         server.setQuality(50);
         server.startAutomaticCapture("cam0");
+        
+
+    	SmartDashboard.putData("Flywheels", new FlywheelDSControl());
     }
 	
 	/**
