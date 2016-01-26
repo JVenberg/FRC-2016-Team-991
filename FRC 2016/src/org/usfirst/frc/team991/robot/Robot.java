@@ -3,11 +3,11 @@ package org.usfirst.frc.team991.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team991.robot.commands.FlywheelDSControl;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +27,11 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser chooser;
 	CameraServer server;
+	
+	Preferences prefs;
+	
+	public static double frontWheel;
+	public static double backWheel;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -40,12 +45,12 @@ public class Robot extends IterativeRobot {
 //        SmartDashboard.putData("Auto mode", chooser);
 		flywheel = new Flywheels();
 		
-		server = CameraServer.getInstance();
-        server.setQuality(50);
-        server.startAutomaticCapture("cam0");
+//		server = CameraServer.getInstance();
+//        server.setQuality(50);
+//        server.startAutomaticCapture("cam0");
         
 
-    	SmartDashboard.putData("Flywheels", new FlywheelDSControl());
+    	SmartDashboard.putData("Flywheel", flywheel);
     }
 	
 	/**
@@ -100,6 +105,11 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
+
+		prefs = Preferences.getInstance();
+		frontWheel = prefs.getDouble("Front Wheel", 0.0);
+		backWheel = prefs.getDouble("Back Wheel", 0.0);
+		
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
 

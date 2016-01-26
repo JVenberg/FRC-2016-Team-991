@@ -7,5 +7,5 @@ package org.usfirst.frc.team991.robot;
  */
 public class RobotMap {
 	public static int fly_front_motor = 0;
-	public static int fly_back_motor = 0;
+	public static int fly_back_motor = 1;
 }
