@@ -9,9 +9,14 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 	
 	private Joystick joystick_0 = new Joystick(0);
+	private Joystick joystick_1 = new Joystick(1);
 	
-	public Joystick getJoystick() {
+	public Joystick getPrimaryJoystick() {
 		return joystick_0;
+	}
+	
+	public Joystick getSecondaryJoystick() {
+		return joystick_1;
 	}
 	
 }

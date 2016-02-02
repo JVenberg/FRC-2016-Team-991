@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class FlywheelDSControl extends Command {
 
     public FlywheelDSControl() {
-		requires(Robot.flywheel);
+		requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
@@ -19,7 +19,13 @@ public class FlywheelDSControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.flywheel.setSpeed(Robot.frontWheel, Robot.backWheel);
+    	if(Robot.oi.getPrimaryJoystick().getRawButton(1)) {
+    		Robot.shooter.setSpeed(Robot.frontWheel, Robot.backWheel);
+    	} else {
+    		Robot.shooter.setSpeed(0, 0);
+    	}
+    	
+    	Robot.shooter.setSpin(Robot.oi.getPrimaryJoystick().getTwist());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -29,7 +35,7 @@ public class FlywheelDSControl extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-		Robot.flywheel.stop();
+		Robot.shooter.stop();
     }
 
     // Called when another command which requires one or more of the same

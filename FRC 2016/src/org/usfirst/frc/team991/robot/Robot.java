@@ -4,11 +4,19 @@ package org.usfirst.frc.team991.robot;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team991.robot.subsystems.Flywheels;
+import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team991.robot.subsystems.Shooter;
+
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.DrawMode;
+import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ShapeMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,7 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Flywheels flywheel;
+	public static Drivetrain drivetrain;
+	public static Shooter shooter;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -32,25 +41,37 @@ public class Robot extends IterativeRobot {
 	
 	public static double frontWheel;
 	public static double backWheel;
+	
+	int session;
+	Image frame;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+//    	
+//    	frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+//
+//        // the camera name (ex "cam0") can be found through the roborio web interface
+//        session = NIVision.IMAQdxOpenCamera("cam0",
+//                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+//        NIVision.IMAQdxConfigureGrab(session);
+        
 		oi = new OI();
 //        chooser = new SendableChooser();
 //        chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
 //        SmartDashboard.putData("Auto mode", chooser);
-		flywheel = new Flywheels();
+		
+		shooter = new Shooter();
+		drivetrain = new Drivetrain();
 		
 //		server = CameraServer.getInstance();
 //        server.setQuality(50);
 //        server.startAutomaticCapture("cam0");
         
 
-    	SmartDashboard.putData("Flywheel", flywheel);
     }
 	
 	/**
@@ -117,6 +138,17 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+//    	NIVision.IMAQdxStartAcquisition(session);
+//
+//        /**
+//         * grab an image, draw the circle, and provide it for the camera server
+//         * which will in turn send it to the dashboard.
+//         */
+//
+//
+//        NIVision.IMAQdxGrab(session, frame, 1);
+//        CameraServer.getInstance().setImage(frame);
+//        NIVision.IMAQdxStopAcquisition(session);
         Scheduler.getInstance().run();
     }
     
