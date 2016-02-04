@@ -22,7 +22,7 @@ public class FlywheelDSControl extends Command {
     	if(Robot.oi.getPrimaryJoystick().getRawButton(1)) {
     		Robot.shooter.setSpeed(Robot.frontWheel, Robot.backWheel);
     	} else {
-    		Robot.shooter.setSpeed(0, 0);
+    		Robot.shooter.stop();
     	}
     	
     	Robot.shooter.setSpin(Robot.oi.getPrimaryJoystick().getTwist());

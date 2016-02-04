@@ -24,7 +24,11 @@ public class Drivetrain extends Subsystem {
 		front_right_motor = new Talon(RobotMap.frontrightMotor);
 		back_right_motor = new Talon(RobotMap.backrightMotor);
 		
+		
+		
 		drive = new RobotDrive(front_left_motor, back_left_motor, front_right_motor, back_right_motor);
+		
+		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
 	}
 	
 	public void arcadeDrive(double y, double rot) {

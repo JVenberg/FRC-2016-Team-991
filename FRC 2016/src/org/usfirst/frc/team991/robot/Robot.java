@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Shooter;
 
@@ -50,26 +51,25 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-//    	
-//    	frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-//
-//        // the camera name (ex "cam0") can be found through the roborio web interface
-//        session = NIVision.IMAQdxOpenCamera("cam0",
-//                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-//        NIVision.IMAQdxConfigureGrab(session);
+    	
+    	try {
+    		CameraServer server = CameraServer.getInstance();
+    		server.setQuality(50);
+    		server.startAutomaticCapture("cam0");
+    	} catch (Throwable e) {
+    		System.out.println("No Camera");
+    	}
+       
         
 		oi = new OI();
-//        chooser = new SendableChooser();
-//        chooser.addDefault("Default Auto", new ExampleCommand());
-//        chooser.addObject("My Auto", new MyAutoCommand());
-//        SmartDashboard.putData("Auto mode", chooser);
+		
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", new ArcadeDriveJoystick());
+        chooser.addObject("My Auto", new ArcadeDriveJoystick());
+        SmartDashboard.putData("Auto mode", chooser);
 		
 		shooter = new Shooter();
 		drivetrain = new Drivetrain();
-		
-//		server = CameraServer.getInstance();
-//        server.setQuality(50);
-//        server.startAutomaticCapture("cam0");
         
 
     }
@@ -97,19 +97,9 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-//        autonomousCommand = (Command) chooser.getSelected();
-        
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
     	
+        autonomousCommand = (Command) chooser.getSelected();
+        
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -138,17 +128,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-//    	NIVision.IMAQdxStartAcquisition(session);
-//
-//        /**
-//         * grab an image, draw the circle, and provide it for the camera server
-//         * which will in turn send it to the dashboard.
-//         */
-//
-//
-//        NIVision.IMAQdxGrab(session, frame, 1);
-//        CameraServer.getInstance().setImage(frame);
-//        NIVision.IMAQdxStopAcquisition(session);
         Scheduler.getInstance().run();
     }
     
@@ -157,5 +136,12 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    void cameraPeriodic() {
+//    	NIVision.IMAQdxStartAcquisition(session);
+        NIVision.IMAQdxGrab(session, frame, 1);
+        CameraServer.getInstance().setImage(frame);
+//        NIVision.IMAQdxStopAcquisition(session);
     }
 }
