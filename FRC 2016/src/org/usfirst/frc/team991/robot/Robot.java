@@ -19,7 +19,9 @@ import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import org.usfirst.frc.team991.robot.subsystems.Sucker;
 
 import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ShapeMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,9 +56,12 @@ public class Robot extends IterativeRobot {
 	
 	DigitalInput limSwitch;
 	
-	int session;
-	
 	private final NetworkTable grip = NetworkTable.getTable("grip");
+	
+	CameraServer server;
+	USBCamera camera;
+	Image frame;
+	boolean cameraPluggedIn;
 
 	
     /**
@@ -90,6 +95,26 @@ public class Robot extends IterativeRobot {
 //        chooser.addObject("My Auto", new ArcadeDriveJoystick());
 //        SmartDashboard.putData("Auto mode", chooser);
 		
+		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+		
+		cameraPluggedIn = false;
+		try {
+			camera = new USBCamera("cam0");
+			camera.setBrightness(0);
+			camera.setExposureManual(0);
+			camera.updateSettings();
+			camera.openCamera();
+			camera.startCapture();
+			
+	    	
+			server = CameraServer.getInstance();
+	        server.setQuality(50);
+	        
+	        cameraPluggedIn = true;
+	        
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
         
 
     }
@@ -104,7 +129,8 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
-//		cameraPeriodic();
+		cameraPeriodic();
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -129,20 +155,20 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-//    	cameraPeriodic();
+    	cameraPeriodic();
+    	
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
+        
     	
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
-    	for (double area : grip.getNumberArray("targets/area", new double[0])) {
-            System.out.println("Got contour with area=" + area);
-        }
+    	
 		
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
@@ -151,11 +177,11 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	SmartDashboard.putBoolean("Switch", limSwitch.get());
-    	table = NetworkTable.getTable("GRIP/myContoursReport");
-    	double[] center = table.getNumberArray("area", defaultValue);
-    	spin = (220-center[0])/2200;
-    	SmartDashboard.putNumber("Spin", center[0]);
+        cameraPeriodic();
+        
+    	for (double area : grip.getNumberArray("targets/area", new double[0])) {
+            System.out.println("Got contour with area=" + area);
+        }
         Scheduler.getInstance().run();
     }
     
@@ -166,8 +192,13 @@ public class Robot extends IterativeRobot {
         LiveWindow.run();
     }
     
-//    void cameraPeriodic() {
-//    	targetCam.getImage(frame);  // retrieve a frame from the USBCamera class
-//    	CameraServer.getInstance().setImage(frame);  // push that frame to the SmartDashboard using the CamServer class
-//    }
+    private void cameraPeriodic() {
+    	if (cameraPluggedIn){
+	    	NIVision.Rect rect = new NIVision.Rect(10, 10, 100, 100);
+			camera.getImage(frame);
+			NIVision.imaqDrawShapeOnImage(frame, frame, rect,
+	                DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 0.0f);
+			server.setImage(frame);
+    	}
+    }
 }
