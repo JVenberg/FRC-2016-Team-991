@@ -7,10 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FlywheelDSControl extends Command {
+public class StartCollector extends Command {
 
-    public FlywheelDSControl() {
-		requires(Robot.shooter);
+    public StartCollector() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
@@ -19,13 +20,7 @@ public class FlywheelDSControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.oi.getPrimaryJoystick().getRawButton(1)) {
-    		Robot.shooter.setSpeed(Robot.frontWheel, Robot.backWheel);
-    	} else {
-    		Robot.shooter.stop();
-    	}
-    	
-    	Robot.shooter.setSpin(Robot.oi.getPrimaryJoystick().getTwist());
+		Robot.sucker.setSucker(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -35,12 +30,11 @@ public class FlywheelDSControl extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-		Robot.shooter.stop();
+		Robot.sucker.setSucker(0.0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

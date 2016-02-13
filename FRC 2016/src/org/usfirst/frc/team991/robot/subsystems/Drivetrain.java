@@ -3,9 +3,9 @@ package org.usfirst.frc.team991.robot.subsystems;
 import org.usfirst.frc.team991.robot.RobotMap;
 import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,16 +19,19 @@ public class Drivetrain extends Subsystem {
 	RobotDrive drive;
 	
 	public Drivetrain() {
-		front_left_motor = new Talon(RobotMap.frontleftMotor);
-		back_left_motor = new Talon(RobotMap.backleftMotor);
-		front_right_motor = new Talon(RobotMap.frontrightMotor);
-		back_right_motor = new Talon(RobotMap.backrightMotor);
+		front_left_motor = new CANTalon(RobotMap.frontleftMotor);
+		back_left_motor = new CANTalon(RobotMap.backleftMotor);
+		front_right_motor = new CANTalon(RobotMap.frontrightMotor);
+		back_right_motor = new CANTalon(RobotMap.backrightMotor);
 		
 		
 		
 		drive = new RobotDrive(front_left_motor, back_left_motor, front_right_motor, back_right_motor);
 		
-		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
+		drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 	}
 	
 	public void arcadeDrive(double y, double rot) {
