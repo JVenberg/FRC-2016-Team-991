@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.io.IOException;
 
 import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
+import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
@@ -40,28 +41,16 @@ public class Robot extends IterativeRobot {
 	public static Flywheels flywheels;
 	public static Sucker sucker;
 	public static Rotator flywheelrotator;
+	public static Camera camera;
 	public static OI oi;
 
     Command autonomousCommand;
     SendableChooser chooser;
 	
 	
-	public static double frontWheel;
-	public static double backWheel;
-	
-	public static double spin;
-	
-	public static NetworkTable table;
-	public static double[] defaultValue;
-	
-	DigitalInput limSwitch;
-	
 	private final NetworkTable grip = NetworkTable.getTable("grip");
 	
-	CameraServer server;
-	USBCamera camera;
-	Image frame;
-	boolean cameraPluggedIn;
+	
 
 	
     /**
@@ -69,23 +58,18 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	limSwitch = new DigitalInput(0);
-    	
-    	try {
-            new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    	
-
+  
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
 		sucker = new Sucker();
 		flywheelrotator = new Rotator();
+		camera = new Camera();
 		
-		
-    	defaultValue = new double[1];
-    	defaultValue[0] = 200;
+		try {
+            new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     	
         
 		oi = new OI();
@@ -95,26 +79,7 @@ public class Robot extends IterativeRobot {
 //        chooser.addObject("My Auto", new ArcadeDriveJoystick());
 //        SmartDashboard.putData("Auto mode", chooser);
 		
-		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		
-		cameraPluggedIn = false;
-		try {
-			camera = new USBCamera("cam0");
-			camera.setBrightness(0);
-			camera.setExposureManual(0);
-			camera.updateSettings();
-			camera.openCamera();
-			camera.startCapture();
-			
-	    	
-			server = CameraServer.getInstance();
-	        server.setQuality(50);
-	        
-	        cameraPluggedIn = true;
-	        
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
         
 
     }
@@ -129,7 +94,6 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
-		cameraPeriodic();
 		
 		Scheduler.getInstance().run();
 	}
@@ -155,7 +119,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	cameraPeriodic();
     	
         Scheduler.getInstance().run();
     }
@@ -177,7 +140,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        cameraPeriodic();
         
     	for (double area : grip.getNumberArray("targets/area", new double[0])) {
             System.out.println("Got contour with area=" + area);
@@ -190,15 +152,5 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
-    }
-    
-    private void cameraPeriodic() {
-    	if (cameraPluggedIn){
-	    	NIVision.Rect rect = new NIVision.Rect(10, 10, 100, 100);
-			camera.getImage(frame);
-			NIVision.imaqDrawShapeOnImage(frame, frame, rect,
-	                DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 0.0f);
-			server.setImage(frame);
-    	}
     }
 }
