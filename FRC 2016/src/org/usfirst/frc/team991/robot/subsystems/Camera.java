@@ -21,12 +21,13 @@ public class Camera extends Subsystem {
 	public USBCamera camera;
 	public Image frame;
 	boolean cameraPluggedIn;
+	public double RotatePower = 0;
 	
 	public Camera() {
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		
 		try {
-			camera = new USBCamera("cam0");
+			camera = new USBCamera("cam1");
 			camera.setBrightness(0);
 			camera.setExposureManual(0);
 			camera.updateSettings();
