@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.io.IOException;
 
+import org.usfirst.frc.team991.robot.commands.groups.AutoDriveAndTurn;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
@@ -15,6 +16,7 @@ import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import org.usfirst.frc.team991.robot.subsystems.Sucker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,10 +58,10 @@ public class Robot extends IterativeRobot {
 
 		oi = new OI();
 
-		//        chooser = new SendableChooser();
-		//        chooser.addDefault("Default Auto", new ArcadeDriveJoystick());
-		//        chooser.addObject("My Auto", new ArcadeDriveJoystick());
-		//        SmartDashboard.putData("Auto mode", chooser);
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto (AutoDriveAndTurn)", new AutoDriveAndTurn());
+        chooser.addObject("AutoDriveAndTurn", new AutoDriveAndTurn());
+        SmartDashboard.putData("Auto Mode", chooser);
 	}
 
 	/**
@@ -84,8 +86,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		// autonomousCommand = (Command) chooser.getSelected();
-		// schedule the autonomous command (example)
+		autonomousCommand = (Command) chooser.getSelected();
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 

@@ -1,8 +1,8 @@
 package org.usfirst.frc.team991.robot;
 
 import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
-import org.usfirst.frc.team991.robot.commands.ShootandCollect;
 import org.usfirst.frc.team991.robot.commands.StartCollector;
+import org.usfirst.frc.team991.robot.commands.groups.ShootandCollect;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

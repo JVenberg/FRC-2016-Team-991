@@ -1,6 +1,8 @@
-package org.usfirst.frc.team991.robot.commands;
+package org.usfirst.frc.team991.robot.commands.groups;
 
 import org.usfirst.frc.team991.robot.Robot;
+import org.usfirst.frc.team991.robot.commands.FlywheelRun;
+import org.usfirst.frc.team991.robot.commands.StartCollector;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
