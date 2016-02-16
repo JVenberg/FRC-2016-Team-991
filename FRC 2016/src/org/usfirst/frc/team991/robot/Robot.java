@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import java.io.IOException;
 
@@ -36,12 +35,6 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser chooser;
 
-
-	private final NetworkTable grip = NetworkTable.getTable("grip");
-
-
-
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -67,10 +60,6 @@ public class Robot extends IterativeRobot {
 		//        chooser.addDefault("Default Auto", new ArcadeDriveJoystick());
 		//        chooser.addObject("My Auto", new ArcadeDriveJoystick());
 		//        SmartDashboard.putData("Auto mode", chooser);
-
-
-
-
 	}
 
 	/**
@@ -79,11 +68,9 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit(){
-
 	}
 
 	public void disabledPeriodic() {
-
 		Scheduler.getInstance().run();
 	}
 
@@ -97,9 +84,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-
-		//        autonomousCommand = (Command) chooser.getSelected();
-
+		// autonomousCommand = (Command) chooser.getSelected();
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
@@ -108,19 +93,15 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during autonomous
 	 */
 	public void autonomousPeriodic() {
-
 		Scheduler.getInstance().run();
 	}
 
 	public void teleopInit() {
 
-
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-
-
 
 		if (autonomousCommand != null) autonomousCommand.cancel();
 	}
@@ -129,10 +110,6 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-
-		for (double area : grip.getNumberArray("targets/area", new double[0])) {
-			System.out.println("Got contour with area=" + area);
-		}
 		Scheduler.getInstance().run();
 	}
 
