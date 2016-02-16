@@ -14,7 +14,6 @@ public class Sucker extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	// Jack is gay
 
 	SpeedController sucker;
 	DigitalInput limitSwitch;
@@ -30,7 +29,7 @@ public class Sucker extends Subsystem {
     public void setSucker(Double speed) {
     	sucker.set(speed);
     }
-    public boolean getSwitch() {
+    public boolean isPressed() {
     	return !limitSwitch.get();
     }
 }

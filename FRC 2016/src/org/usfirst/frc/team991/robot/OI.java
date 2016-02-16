@@ -1,12 +1,13 @@
 package org.usfirst.frc.team991.robot;
 
-import org.usfirst.frc.team991.robot.commands.Collect;
-import org.usfirst.frc.team991.robot.commands.FlywheelRun;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
 import org.usfirst.frc.team991.robot.commands.ShootandCollect;
+import org.usfirst.frc.team991.robot.commands.StartCollector;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -19,11 +20,17 @@ public class OI {
 
 	Button trig = new JoystickButton(joystick_0, 1);
 	Button collect = new JoystickButton(joystick_0, 2);
+	Button aim = new JoystickButton(joystick_1, 2);
+	
+	Command shootAndCollect = new ShootandCollect();
+	Command startCollector = new StartCollector();
+	public Command cameraVisionProcessing = new CameraVisionProcessing();
+	
 	
 	public OI() {
-		trig.whenPressed(new ShootandCollect());
-		collect.toggleWhenActive(new Collect());
-//		trig.whenReleased(new Collect());
+		trig.whenPressed(shootAndCollect);
+		collect.toggleWhenActive(startCollector);
+		aim.whileHeld(cameraVisionProcessing);
 	}
 	
 	public Joystick getPrimaryJoystick() {

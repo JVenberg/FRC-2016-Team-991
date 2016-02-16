@@ -19,7 +19,7 @@ public class Rotate extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.getSecondaryJoystick().getRawButton(1)){
+    	if (Robot.oi.cameraVisionProcessing.isRunning()){
     		Robot.flywheelrotator.setSpin(Robot.camera.RotatePower);
     	} else {
         	Robot.flywheelrotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
@@ -34,6 +34,7 @@ public class Rotate extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.flywheelrotator.stop();
     }
 
     // Called when another command which requires one or more of the same

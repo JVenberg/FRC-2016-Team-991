@@ -27,5 +27,9 @@ public class Rotator extends Subsystem {
     public void setSpin(double spin) {
     	spinner.set(spin);
     }
+    
+    public void stop() {
+    	spinner.set(0);
+    }
 }
 

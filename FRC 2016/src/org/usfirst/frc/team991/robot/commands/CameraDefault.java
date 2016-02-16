@@ -7,25 +7,27 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FlywheelStop extends Command {
+public class CameraDefault extends Command {
 
-    public FlywheelStop() {
-        requires(Robot.flywheels);
+    public CameraDefault() {
+        requires(Robot.camera);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.flywheels.setSpeed(0,0);
-    	Robot.sucker.setSucker(0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if (Robot.camera.isCameraPluggedIn()){
+			Robot.camera.camera.getImage(Robot.camera.frame); //Gets frame from camera
+			Robot.camera.server.setImage(Robot.camera.frame); //Pushes frame to driver station
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.camera.isCameraPluggedIn();
     }
 
     // Called once after isFinished returns true

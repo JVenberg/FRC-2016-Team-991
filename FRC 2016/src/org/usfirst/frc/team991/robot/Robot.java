@@ -1,10 +1,7 @@
 
 package org.usfirst.frc.team991.robot;
 
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -12,21 +9,13 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import java.io.IOException;
 
-import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import org.usfirst.frc.team991.robot.subsystems.Sucker;
 
-import com.ni.vision.NIVision;
-import com.ni.vision.NIVision.DrawMode;
-import com.ni.vision.NIVision.Image;
-import com.ni.vision.NIVision.ShapeMode;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.USBCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the

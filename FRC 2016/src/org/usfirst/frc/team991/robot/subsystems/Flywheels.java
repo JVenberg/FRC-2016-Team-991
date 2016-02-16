@@ -1,11 +1,9 @@
 package org.usfirst.frc.team991.robot.subsystems;
 
 import org.usfirst.frc.team991.robot.RobotMap;
-import org.usfirst.frc.team991.robot.commands.FlywheelRun;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
