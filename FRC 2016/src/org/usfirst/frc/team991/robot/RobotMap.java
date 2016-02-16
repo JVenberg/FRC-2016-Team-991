@@ -10,7 +10,7 @@ public class RobotMap {
 	public static int fly_back_motor = 5;
 	public static int spinner = 4;
 	public static int sucker = 0;
-	
+
 	public static int frontleftMotor = 6;
 	public static int backleftMotor = 2;
 	public static int frontrightMotor = 3;

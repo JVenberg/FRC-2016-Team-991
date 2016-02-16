@@ -12,38 +12,38 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Drivetrain extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
 	SpeedController front_left_motor, back_left_motor, front_right_motor, back_right_motor;
 	RobotDrive drive;
-	
+
 	public Drivetrain() {
 		front_left_motor = new CANTalon(RobotMap.frontleftMotor);
 		back_left_motor = new CANTalon(RobotMap.backleftMotor);
 		front_right_motor = new CANTalon(RobotMap.frontrightMotor);
 		back_right_motor = new CANTalon(RobotMap.backrightMotor);
-		
+
 		drive = new RobotDrive(front_left_motor, back_left_motor, front_right_motor, back_right_motor);
-		
+
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 	}
-	
+
 	public void arcadeDrive(double y, double rot) {
 		drive.arcadeDrive(y, rot, false);
 	}
-	
+
 	public void stop() {
 		drive.arcadeDrive(0, 0, false);
 	}
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new ArcadeDriveJoystick());
-    }
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		//setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new ArcadeDriveJoystick());
+	}
 }
 

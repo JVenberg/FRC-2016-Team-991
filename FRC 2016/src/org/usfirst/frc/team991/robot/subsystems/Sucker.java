@@ -11,26 +11,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Sucker extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
 
 	SpeedController sucker;
 	DigitalInput limitSwitch;
-	
+
 	public Sucker() {
 		sucker = new CANTalon(RobotMap.sucker);
 		limitSwitch = new DigitalInput(1);
 	}
-    public void initDefaultCommand() {
-        //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    public void setSucker(Double speed) {
-    	sucker.set(speed);
-    }
-    public boolean isPressed() {
-    	return !limitSwitch.get();
-    }
+	public void initDefaultCommand() {
+		//setDefaultCommand(new MySpecialCommand());
+	}
+
+	public void setSucker(Double speed) {
+		sucker.set(speed);
+	}
+	public boolean isPressed() {
+		return !limitSwitch.get();
+	}
 }
 

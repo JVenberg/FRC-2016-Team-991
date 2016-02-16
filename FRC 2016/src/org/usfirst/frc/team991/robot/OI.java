@@ -14,33 +14,33 @@ import edu.wpi.first.wpilibj.command.Command;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	
+
 	private Joystick joystick_0 = new Joystick(0);
 	private Joystick joystick_1 = new Joystick(1);
 
 	Button trig = new JoystickButton(joystick_0, 1);
 	Button collect = new JoystickButton(joystick_0, 2);
 	Button aim = new JoystickButton(joystick_1, 2);
-	
+
 	Command shootAndCollect = new ShootandCollect();
 	Command startCollector = new StartCollector();
 	public Command cameraVisionProcessing = new CameraVisionProcessing();
-	
-	
+
+
 	public OI() {
 		trig.whenPressed(shootAndCollect);
 		collect.toggleWhenActive(startCollector);
 		aim.whileHeld(cameraVisionProcessing);
 	}
-	
+
 	public Joystick getPrimaryJoystick() {
 		return joystick_0;
 	}
-	
+
 	public Joystick getSecondaryJoystick() {
 		return joystick_1;
 	}
-	
-	
+
+
 }
 

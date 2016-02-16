@@ -21,7 +21,7 @@ public class CameraVisionProcessing extends Command {
 	NIVision.Rect rect;
 
 	int imaqError;
-	
+
 
 	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(100, 120);	//Default hue range for yellow tote
 	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(150, 255);	//Default saturation range for yellow tote
@@ -35,20 +35,20 @@ public class CameraVisionProcessing extends Command {
 	double SOLIDITY_MIN = 0.27; //Maximum solidity (area/convex_hull_area) to be considered target
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
-	
-    public CameraVisionProcessing() {
-        requires(Robot.camera);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
-    	criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, SOLIDITY_MIN, SOLIDITY_MAX, 0, 0);
-    }
+	public CameraVisionProcessing() {
+		requires(Robot.camera);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	if (Robot.camera.isCameraPluggedIn()){
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
+		criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, SOLIDITY_MIN, SOLIDITY_MAX, 0, 0);
+	}
+
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		if (Robot.camera.isCameraPluggedIn()){
 			Robot.camera.camera.getImage(Robot.camera.frame); //Gets frame from camera
 
 			//Applies a Robot.camera.binaryFrame threshold to the frame to separate particles
@@ -56,10 +56,10 @@ public class CameraVisionProcessing extends Command {
 					NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
 
 			int numParticles = NIVision.imaqCountParticles(Robot.camera.binaryFrame, 1); //Gets number of particles in frame
-			
+
 			//Filters out particles with small area
 			imaqError = NIVision.imaqParticleFilter4(Robot.camera.binaryFrame, Robot.camera.binaryFrame, criteria, filterOptions, null);
-			
+
 			if(numParticles > 0)
 			{
 				//Measure particles and sort by particle size
@@ -68,7 +68,7 @@ public class CameraVisionProcessing extends Command {
 				{
 					ParticleReport par = new ParticleReport();
 					par.Solidity = NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0,NIVision.MeasurementType.MT_AREA) /
-									NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CONVEX_HULL_AREA);
+							NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CONVEX_HULL_AREA);
 					par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0,
 							NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);
 					par.Area = NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0,
@@ -81,49 +81,49 @@ public class CameraVisionProcessing extends Command {
 							NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
 					par.BoundingRectRight = NIVision.imaqMeasureParticle(Robot.camera.binaryFrame, particleIndex, 0,
 							NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
-					
+
 					particles.add(par);
 				}
 				particles.sort(null);
-				
+
 				//Collects/computes values of particle with largest area
 				int top = (int)particles.elementAt(0).BoundingRectTop;
 				int left = (int)particles.elementAt(0).BoundingRectLeft;
 				int width = (int)particles.elementAt(0).BoundingRectRight - left;
 				int height = (int)particles.elementAt(0).BoundingRectBottom - top;
 				double center = (particles.elementAt(0).BoundingRectLeft + particles.elementAt(0).BoundingRectRight)/2;
-				
+
 				Robot.camera.RotatePower = -(140-center)/320 * 2; //Sets power of spinner motor
-				
-		    	rect = new NIVision.Rect(top, left, height, width); //Creates rectangle that encapsulates target
+
+				rect = new NIVision.Rect(top, left, height, width); //Creates rectangle that encapsulates target
 			}
-			
+
 			//Draws rectangle that encapsulates target on frame
 			NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
-	                DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
-			
-			
+					DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
+
+
 			//Pushes frame to driver station
 			Robot.camera.server.setImage(Robot.camera.frame);
-    	}
-    }
+		}
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return Robot.camera.isCameraPluggedIn();
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return Robot.camera.isCameraPluggedIn();
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.camera.RotatePower = 0;
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		Robot.camera.RotatePower = 0;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
-    
-    public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
+
+	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		double PercentAreaToImageArea;
 		double Area;
 		double Solidity;
@@ -131,18 +131,18 @@ public class CameraVisionProcessing extends Command {
 		double BoundingRectTop;
 		double BoundingRectRight;
 		double BoundingRectBottom;
-		
+
 		public int compareTo(ParticleReport r)
 		{
 			return (int)(r.Area - this.Area);
 		}
-		
+
 		public int compare(ParticleReport r1, ParticleReport r2)
 		{
 			return (int)(r1.Area - r2.Area);
 		}
 	};
-	
+
 	double computeDistance (Image image, ParticleReport report) {
 		double normalizedWidth, targetWidth;
 		NIVision.GetImageSizeResult size;
@@ -153,7 +153,7 @@ public class CameraVisionProcessing extends Command {
 
 		return  targetWidth/(normalizedWidth*12*Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
 	}
-	
+
 	void testValues() {
 		TOTE_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
 		TOTE_HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
@@ -163,4 +163,4 @@ public class CameraVisionProcessing extends Command {
 		TOTE_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
 	}
 }
-    
+
