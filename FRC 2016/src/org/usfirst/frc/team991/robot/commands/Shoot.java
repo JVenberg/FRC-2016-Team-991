@@ -7,10 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CameraDefault extends Command {
+public class Shoot extends Command {
 
-	public CameraDefault() {
-		requires(Robot.camera);
+	boolean startedPressed = false;
+
+	public Shoot() {
+		requires(Robot.sucker);
+		setInterruptible(true);
 	}
 
 	// Called just before this Command runs the first time
@@ -19,19 +22,17 @@ public class CameraDefault extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.camera.isCameraPluggedIn()){
-			Robot.camera.camera.getImage(Robot.camera.frame); //Gets frame from camera
-			Robot.camera.server.setImage(Robot.camera.frame); //Pushes frame to driver station
-		}
+		Robot.sucker.setSucker(1.0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.camera.isCameraPluggedIn();
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.sucker.stop();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.io.IOException;
 
+import org.usfirst.frc.team991.robot.commands.Turn;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDriveAndTurn;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
@@ -30,7 +31,7 @@ public class Robot extends IterativeRobot {
 	public static Drivetrain drivetrain;
 	public static Flywheels flywheels;
 	public static Sucker sucker;
-	public static Rotator flywheelrotator;
+	public static Rotator rotator;
 	public static Camera camera;
 	public static OI oi;
 
@@ -46,21 +47,15 @@ public class Robot extends IterativeRobot {
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
 		sucker = new Sucker();
-		flywheelrotator = new Rotator();
+		rotator = new Rotator();
 		camera = new Camera();
-
-		try {
-			new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 
 		oi = new OI();
 
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto (AutoDriveAndTurn)", new AutoDriveAndTurn());
-        chooser.addObject("AutoDriveAndTurn", new AutoDriveAndTurn());
+        chooser.addObject("Turn 90", new Turn(90, 3));
         SmartDashboard.putData("Auto Mode", chooser);
 	}
 
@@ -111,6 +106,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
+		SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
 		Scheduler.getInstance().run();
 	}
 

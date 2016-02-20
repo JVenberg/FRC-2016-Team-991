@@ -34,6 +34,8 @@ public class Drivetrain extends Subsystem {
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		
 		gyro = new AnalogGyro(RobotMap.gyro);
+		gyro.initGyro();
+		gyro.setSensitivity(0.0019);
 		gyro.calibrate();
 	}
 
@@ -55,7 +57,6 @@ public class Drivetrain extends Subsystem {
 	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		//setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new ArcadeDriveJoystick());
 	}
 }

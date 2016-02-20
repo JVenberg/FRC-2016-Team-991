@@ -14,8 +14,8 @@ public class DriveStraight extends Command {
 
 	public DriveStraight(double speed, double timeout) {
 		requires(Robot.drivetrain);
-		this.speed = speed;
 		setTimeout(timeout);
+		this.speed = speed;
 
 	}
 

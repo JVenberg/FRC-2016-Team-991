@@ -1,6 +1,6 @@
 package org.usfirst.frc.team991.robot.subsystems;
 
-import org.usfirst.frc.team991.robot.commands.CameraDefault;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.VisionException;
@@ -21,7 +21,8 @@ public class Camera extends Subsystem {
 	public CameraServer server;
 	public USBCamera camera;
 	public Image frame;
-	public Image binaryFrame;
+	
+	public double FlywheelCalculated = .5;
 	public double RotatePower = 0;
 
 	boolean cameraPluggedIn;
@@ -29,7 +30,6 @@ public class Camera extends Subsystem {
 	public Camera() {
 		// Initializes frames for vision processing
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-		binaryFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_U8, 0);
 
 		// Tries to initialize camera
 		try {
@@ -63,15 +63,11 @@ public class Camera extends Subsystem {
 		return frame;
 	}
 
-	public Image getBinaryFrame() {
-		return binaryFrame;
-	}
-
 	public boolean isCameraPluggedIn() {
 		return cameraPluggedIn;
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new CameraDefault());
+		setDefaultCommand(new CameraVisionProcessing(false));
 	}
 }

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Rotate extends Command {
 
 	public Rotate() {
-		requires(Robot.flywheelrotator);
+		requires(Robot.rotator);
 	}
 
 	// Called just before this Command runs the first time
@@ -20,11 +20,10 @@ public class Rotate extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (Robot.oi.cameraVisionProcessing.isRunning()){
-			Robot.flywheelrotator.setSpin(Robot.camera.RotatePower);
+			Robot.rotator.setSpin(Robot.camera.RotatePower);
 		} else {
-			Robot.flywheelrotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
+			Robot.rotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
 		}
-
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -34,11 +33,12 @@ public class Rotate extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.flywheelrotator.stop();
+		Robot.rotator.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

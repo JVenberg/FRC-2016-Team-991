@@ -1,12 +1,14 @@
 package org.usfirst.frc.team991.robot;
 
 import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
-import org.usfirst.frc.team991.robot.commands.StartCollector;
-import org.usfirst.frc.team991.robot.commands.groups.ShootandCollect;
+import org.usfirst.frc.team991.robot.commands.Collect;
+import org.usfirst.frc.team991.robot.commands.Shoot;
+import org.usfirst.frc.team991.robot.commands.groups.ShootGroup;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -18,19 +20,19 @@ public class OI {
 	private Joystick joystick_0 = new Joystick(0);
 	private Joystick joystick_1 = new Joystick(1);
 
-	Button trig = new JoystickButton(joystick_0, 1);
-	Button collect = new JoystickButton(joystick_0, 2);
-	Button aim = new JoystickButton(joystick_1, 2);
+	Button trig_button = new JoystickButton(getSecondaryJoystick(), 11);
+	Button collect_button = new JoystickButton(getPrimaryJoystick(), 2);
+	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
 
-	Command shootAndCollect = new ShootandCollect();
-	Command startCollector = new StartCollector();
-	public Command cameraVisionProcessing = new CameraVisionProcessing();
+	Command shootGroup = new ShootGroup();
+	Command collect = new Collect();
+	public Command cameraVisionProcessing = new CameraVisionProcessing(true);
 
 
 	public OI() {
-		trig.whenPressed(shootAndCollect);
-		collect.toggleWhenActive(startCollector);
-		aim.whileHeld(cameraVisionProcessing);
+		trig_button.whenPressed(shootGroup);
+		collect_button.toggleWhenActive(collect);
+		aim_button.whileHeld(cameraVisionProcessing);
 	}
 
 	public Joystick getPrimaryJoystick() {

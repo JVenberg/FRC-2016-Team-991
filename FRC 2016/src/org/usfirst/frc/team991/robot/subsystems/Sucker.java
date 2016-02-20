@@ -20,7 +20,7 @@ public class Sucker extends Subsystem {
 
 	public Sucker() {
 		sucker = new CANTalon(RobotMap.sucker);
-		limitSwitch = new DigitalInput(1);
+		limitSwitch = new DigitalInput(RobotMap.suckerLimitSwitch);
 	}
 	public void initDefaultCommand() {
 		//setDefaultCommand(new MySpecialCommand());
@@ -29,8 +29,13 @@ public class Sucker extends Subsystem {
 	public void setSucker(Double speed) {
 		sucker.set(speed);
 	}
+	
 	public boolean isPressed() {
 		return !limitSwitch.get();
+	}
+	
+	public void stop() {
+		sucker.set(0);
 	}
 }
 

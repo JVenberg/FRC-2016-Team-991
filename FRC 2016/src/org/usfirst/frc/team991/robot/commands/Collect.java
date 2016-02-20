@@ -7,17 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class StartCollector extends Command {
+public class Collect extends Command {
 
 	boolean startedPressed = false;
 
-	public StartCollector() {
+	public Collect() {
 		requires(Robot.sucker);
+		setInterruptible(true);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		startedPressed = Robot.sucker.isPressed();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,24 +27,17 @@ public class StartCollector extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (startedPressed) {
-			return false;
-		} else {
-			return Robot.sucker.isPressed();
-		}
+		return Robot.sucker.isPressed();
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		stop();
+		Robot.sucker.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-	}
-
-	public void stop() {
-		Robot.sucker.setSucker(0.0);
+		end();
 	}
 }

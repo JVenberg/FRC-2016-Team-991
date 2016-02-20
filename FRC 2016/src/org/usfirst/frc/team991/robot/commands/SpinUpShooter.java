@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FlywheelRun extends Command {
+public class SpinUpShooter extends Command {
 
-	public FlywheelRun() {
+	public SpinUpShooter() {
 		requires(Robot.flywheels);
 	}
 
@@ -19,13 +19,15 @@ public class FlywheelRun extends Command {
 	Double frontWheel, backWheel;
 
 	protected void initialize() {
-		prefs = Preferences.getInstance();
-		frontWheel = prefs.getDouble("Front Wheel", 0.0);
-		backWheel = prefs.getDouble("Back Wheel", 0.0);
+		frontWheel = Robot.camera.FlywheelCalculated;
+		backWheel = -Robot.camera.FlywheelCalculated;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		if (Robot.oi.cameraVisionProcessing.isRunning()) {
+			
+		}
 		Robot.flywheels.setSpeed(frontWheel, backWheel);
 	}
 
