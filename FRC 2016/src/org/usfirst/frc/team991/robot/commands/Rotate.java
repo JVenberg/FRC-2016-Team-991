@@ -9,8 +9,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class Rotate extends Command {
 
-	public Rotate() {
+	boolean active;
+	
+	public Rotate(boolean active) {
 		requires(Robot.rotator);
+		this.active = active;
 	}
 
 	// Called just before this Command runs the first time
@@ -19,10 +22,14 @@ public class Rotate extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.oi.cameraVisionProcessing.isRunning()){
+		if (Robot.oi.cameraVisionProcessing.isRunning() || active){
 			Robot.rotator.setSpin(Robot.camera.RotatePower);
 		} else {
-			Robot.rotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
+			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.1) {
+				Robot.rotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
+			} else {
+				Robot.rotator.setSpin(0);
+			}
 		}
 	}
 

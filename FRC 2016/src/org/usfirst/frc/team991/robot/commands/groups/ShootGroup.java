@@ -1,7 +1,6 @@
 package org.usfirst.frc.team991.robot.commands.groups;
 
 import org.usfirst.frc.team991.robot.Robot;
-import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
 import org.usfirst.frc.team991.robot.commands.Shoot;
 import org.usfirst.frc.team991.robot.commands.SpinUpShooter;
 

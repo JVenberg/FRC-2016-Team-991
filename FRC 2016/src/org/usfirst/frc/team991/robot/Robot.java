@@ -6,14 +6,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import java.io.IOException;
-
-import org.usfirst.frc.team991.robot.commands.Turn;
+import org.usfirst.frc.team991.robot.commands.LedControl;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDriveAndTurn;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
+import org.usfirst.frc.team991.robot.subsystems.LEDs;
 import org.usfirst.frc.team991.robot.subsystems.Sucker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -33,10 +32,16 @@ public class Robot extends IterativeRobot {
 	public static Sucker sucker;
 	public static Rotator rotator;
 	public static Camera camera;
+	public static LEDs leds;
 	public static OI oi;
 
 	Command autonomousCommand;
-	SendableChooser chooser;
+//	SendableChooser chooser;
+	
+	Command ledCommand;
+	SendableChooser ledChooser;
+	
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -49,14 +54,19 @@ public class Robot extends IterativeRobot {
 		sucker = new Sucker();
 		rotator = new Rotator();
 		camera = new Camera();
+		leds = new LEDs();
 
 
 		oi = new OI();
+		
+		
 
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto (AutoDriveAndTurn)", new AutoDriveAndTurn());
-        chooser.addObject("Turn 90", new Turn(90, 3));
-        SmartDashboard.putData("Auto Mode", chooser);
+        ledChooser = new SendableChooser();
+        ledChooser.addDefault("Red", new LedControl(0));
+        ledChooser.addObject("Blue", new LedControl(1));
+        ledChooser.addObject("Green", new LedControl(2));
+        SmartDashboard.putData("Led Colors", ledChooser);
+		
 	}
 
 	/**
@@ -65,6 +75,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit(){
+		
 	}
 
 	public void disabledPeriodic() {
@@ -81,7 +92,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		autonomousCommand = (Command) chooser.getSelected();
+		autonomousCommand = new AutoDriveAndTurn();
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 
@@ -93,6 +104,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
+		SmartDashboard.putData(sucker);
+
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to 
@@ -106,7 +119,8 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
+		ledCommand = (Command) ledChooser.getSelected();
+		ledCommand.start();
 		Scheduler.getInstance().run();
 	}
 

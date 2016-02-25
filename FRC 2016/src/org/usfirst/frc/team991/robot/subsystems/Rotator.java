@@ -21,7 +21,7 @@ public class Rotator extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new Rotate());
+		setDefaultCommand(new Rotate(false));
 	}
 
 	public void setSpin(double spin) {

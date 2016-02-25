@@ -28,4 +28,11 @@ public class RobotMap {
 	
 	//Digital Input
 	public static int suckerLimitSwitch = 1;
+	
+	public static int encoderA = 2;
+	public static int encoderB = 3;
+	
+	public static int redLed = 0;
+	public static int greenLed = 1;
+	public static int blueLed = 2;
 }

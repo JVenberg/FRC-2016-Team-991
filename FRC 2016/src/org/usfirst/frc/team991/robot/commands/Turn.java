@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class Turn extends Command {
 
-	double Kp = 0.03;
+	double Kp = 0.02;
 	double angleOfTurn;
 
 	public Turn(double angleOfTurn, double timeout) {

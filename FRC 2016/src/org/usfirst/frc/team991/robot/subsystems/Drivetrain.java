@@ -5,6 +5,7 @@ import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,7 +20,9 @@ public class Drivetrain extends Subsystem {
 	SpeedController front_left_motor, back_left_motor, front_right_motor, back_right_motor;
 	RobotDrive drive;
 	AnalogGyro gyro;
-
+	Encoder enc;
+	
+	
 	public Drivetrain() {
 		front_left_motor = new CANTalon(RobotMap.frontleftMotor);
 		back_left_motor = new CANTalon(RobotMap.backleftMotor);
@@ -35,8 +38,14 @@ public class Drivetrain extends Subsystem {
 		
 		gyro = new AnalogGyro(RobotMap.gyro);
 		gyro.initGyro();
-		gyro.setSensitivity(0.0019);
+		gyro.setSensitivity(0.0021);
 		gyro.calibrate();
+		
+		enc = new Encoder(RobotMap.encoderA, RobotMap.encoderB, false, Encoder.EncodingType.k4X);
+		enc.setMaxPeriod(.1);
+		enc.setMinRate(10);
+		enc.setDistancePerPulse(5);
+		enc.setSamplesToAverage(7);
 	}
 
 	public void arcadeDrive(double y, double rot) {
@@ -55,6 +64,21 @@ public class Drivetrain extends Subsystem {
 		return gyro.getAngle();
 	}
 	
+	public void resetEnc() {
+		enc.reset();
+	}
+	
+	public double getEncDistance() {
+		return enc.getDistance();
+	}
+
+	public double getEncRate() {
+		return enc.getRate();
+	}
+	
+	public boolean isStopped() {
+		return enc.getStopped();
+	}
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		setDefaultCommand(new ArcadeDriveJoystick());

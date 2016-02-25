@@ -16,18 +16,17 @@ public class SpinUpShooter extends Command {
 
 	// Called just before this Command runs the first time
 	Preferences prefs;
-	Double frontWheel, backWheel;
+	double frontWheel, backWheel, speed;
 
 	protected void initialize() {
-		frontWheel = Robot.camera.FlywheelCalculated;
-		backWheel = -Robot.camera.FlywheelCalculated;
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.oi.cameraVisionProcessing.isRunning()) {
-			
-		}
+		speed = .55;
+		frontWheel = speed;
+		backWheel = -speed;
 		Robot.flywheels.setSpeed(frontWheel, backWheel);
 	}
 
