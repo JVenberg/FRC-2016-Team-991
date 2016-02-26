@@ -1,6 +1,7 @@
 package org.usfirst.frc.team991.robot.commands;
 
 import org.usfirst.frc.team991.robot.Robot;
+import org.usfirst.frc.team991.robot.subsystems.LEDs.LedColor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LedControl extends Command {
 
-	int color;
+	LedColor color;
 
 	public LedControl() {
 		requires(Robot.leds);
@@ -22,15 +23,15 @@ public class LedControl extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		color = (int) Robot.leds.ledChooser.getSelected();
+		color = (LedColor) Robot.leds.ledChooser.getSelected();
 		switch(color){
-		case(0):
+		case RED:
 			Robot.leds.setRed();
 		break;
-		case(1):
+		case GREEN:
 			Robot.leds.setGreen();
 		break;
-		case(2):
+		case BLUE:
 			Robot.leds.setBlue();
 		break;
 		default:

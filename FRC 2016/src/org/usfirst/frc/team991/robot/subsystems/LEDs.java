@@ -11,15 +11,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class LEDs extends Subsystem {
 
+
+
+public class LEDs extends Subsystem {
+	public static enum LedColor {
+		RED, GREEN, BLUE, BLINK, OFF;
+	}
+	
+	
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
 	Relay red, green, blue;
 	public SendableChooser ledChooser;
 	private double lastSecond;
-	private int color;
+	private LedColor color;
 
 	public LEDs() {
 		red = new Relay(RobotMap.redLed);
@@ -27,10 +34,10 @@ public class LEDs extends Subsystem {
 		blue = new Relay(RobotMap.blueLed);
 
 		ledChooser = new SendableChooser();
-		ledChooser.addDefault("Blink", -1);
-		ledChooser.addObject("Red", 0);
-		ledChooser.addObject("Blue", 1);
-		ledChooser.addObject("Green", 2);
+		ledChooser.addDefault("Blink", LedColor.BLINK);
+		ledChooser.addObject("Red", LedColor.RED);
+		ledChooser.addObject("Blue", LedColor.BLUE);
+		ledChooser.addObject("Green", LedColor.GREEN);
 		SmartDashboard.putData("Led Colors", ledChooser);
 
 	}
@@ -40,28 +47,28 @@ public class LEDs extends Subsystem {
 	}
 
 	public void setRed() {
-		color = 0;
+		color = LedColor.RED;
 		red.set(Relay.Value.kOff);
 		green.set(Relay.Value.kOn);
 		blue.set(Relay.Value.kOn);
 	}
 
 	public void setGreen() {
-		color = 1;
+		color = LedColor.GREEN;
 		red.set(Relay.Value.kOn);
 		green.set(Relay.Value.kOff);
 		blue.set(Relay.Value.kOn);
 	}
 
 	public void setBlue() {
-		color = 2;
+		color = LedColor.BLUE;
 		red.set(Relay.Value.kOn);
 		green.set(Relay.Value.kOn);
 		blue.set(Relay.Value.kOff);
 	}
 
 	public void turnOff() {
-		color = -1;
+		color = LedColor.OFF;
 		red.set(Relay.Value.kOn);
 		green.set(Relay.Value.kOn);
 		blue.set(Relay.Value.kOn);
@@ -71,13 +78,13 @@ public class LEDs extends Subsystem {
 		double currentTime = (int) System.currentTimeMillis() * 0.001;
 		if (currentTime != lastSecond) {
 			switch(color) {
-			case(0):
+			case RED:
 				setGreen();
 			break;
-			case(1):
+			case GREEN:
 				setBlue();
 			break;
-			case(2):
+			case BLUE:
 				setRed();
 			break;
 			default:

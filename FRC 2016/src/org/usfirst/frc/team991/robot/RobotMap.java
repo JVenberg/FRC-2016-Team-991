@@ -31,7 +31,9 @@ public class RobotMap {
 
 	public static int encoderA = 2;
 	public static int encoderB = 3;
+	
 
+	//Relays
 	public static int redLed = 0;
 	public static int greenLed = 1;
 	public static int blueLed = 2;

@@ -11,9 +11,8 @@ public class Rotate extends Command {
 
 	boolean active;
 
-	public Rotate(boolean active) {
+	public Rotate() {
 		requires(Robot.rotator);
-		this.active = active;
 	}
 
 	// Called just before this Command runs the first time
@@ -22,7 +21,7 @@ public class Rotate extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.oi.cameraVisionProcessing.isRunning() || active){
+		if (Robot.camera.RotatePower != 0){
 			Robot.rotator.setSpin(Robot.camera.RotatePower);
 		} else {
 			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.1) {

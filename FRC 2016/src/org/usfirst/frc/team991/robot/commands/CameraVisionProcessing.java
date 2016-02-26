@@ -18,11 +18,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class CameraVisionProcessing extends Command {
+	public enum CamMode {
+		ACTIVE, PASSIVE;
+	}
 
 	NIVision.Rect rect;
 	Image binaryFrame;
 
-	boolean isActive;
+	CamMode mode;
 
 	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(95, 125);	//Default hue range for yellow tote
 	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(145, 255);	//Default saturation range for yellow tote
@@ -39,8 +42,8 @@ public class CameraVisionProcessing extends Command {
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[2];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
 
-	public CameraVisionProcessing(boolean isActive) {
-		this.isActive = isActive;
+	public CameraVisionProcessing(CamMode mode) {
+		this.mode = mode;
 		requires(Robot.camera);
 	}
 
@@ -98,7 +101,7 @@ public class CameraVisionProcessing extends Command {
 			int height = (int)particles.elementAt(0).BoundingRectBottom - top;
 			double center = particles.elementAt(0).Center;
 
-			if (isActive) {
+			if (mode == CamMode.ACTIVE) {
 				Robot.camera.RotatePower = -(AIM_CENTER-center)/320 * 2;
 			} else {
 				Robot.camera.RotatePower = 0;
