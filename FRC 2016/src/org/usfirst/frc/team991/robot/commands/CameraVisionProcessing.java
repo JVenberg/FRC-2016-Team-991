@@ -30,8 +30,8 @@ public class CameraVisionProcessing extends Command {
 	
 	double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
 	double VIEW_ANGLE = 50.5; //View angle for camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
-	double COMPACTNESS_MIN = 30;
-	double COMPACTNESS_MAX = 40;
+	double COMPACTNESS_MIN = .10;
+	double COMPACTNESS_MAX = .50;
 	double AIM_CENTER = 170;
 	
 	double distance;
@@ -70,8 +70,6 @@ public class CameraVisionProcessing extends Command {
 //			TOTE_SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
 //			TOTE_VAL_RANGE.minValue = (int)SmartDashboard.getNumber("Tote val min", TOTE_VAL_RANGE.minValue);
 //			TOTE_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
-
-
 
 		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
 

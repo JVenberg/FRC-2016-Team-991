@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-
+		
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
 		sucker = new Sucker();
@@ -56,17 +56,7 @@ public class Robot extends IterativeRobot {
 		camera = new Camera();
 		leds = new LEDs();
 
-
 		oi = new OI();
-		
-		
-
-        ledChooser = new SendableChooser();
-        ledChooser.addDefault("Red", new LedControl(0));
-        ledChooser.addObject("Blue", new LedControl(1));
-        ledChooser.addObject("Green", new LedControl(2));
-        SmartDashboard.putData("Led Colors", ledChooser);
-		
 	}
 
 	/**
@@ -119,8 +109,6 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		ledCommand = (Command) ledChooser.getSelected();
-		ledCommand.start();
 		Scheduler.getInstance().run();
 	}
 
