@@ -9,9 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class Collect extends Command {
 
-	boolean startedPressed = false;
+	MotorMode mode;
+	
+	public enum MotorMode {
+		FORWARD, BACKWARD, SHOOT;
+	}
 
-	public Collect() {
+	public Collect(MotorMode mode) {
+		this.mode = mode;
 		requires(Robot.sucker);
 		setInterruptible(true);
 	}
@@ -22,12 +27,21 @@ public class Collect extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.sucker.setSucker(1.0);
+		if (mode == MotorMode.BACKWARD) {
+			Robot.sucker.setSucker(-1.0);
+		} else {
+			Robot.sucker.setSucker(1.0);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.sucker.isPressed();
+		if (mode == MotorMode.SHOOT) {
+			return false;
+		} else {
+			return Robot.sucker.isPressed();
+		}
+		
 	}
 
 	// Called once after isFinished returns true
