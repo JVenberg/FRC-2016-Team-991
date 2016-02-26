@@ -36,19 +36,19 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
-//	SendableChooser chooser;
-	
+	//	SendableChooser chooser;
+
 	Command ledCommand;
 	SendableChooser ledChooser;
-	
-	
+
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		
+
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
 		sucker = new Sucker();
@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit(){
-		
+
 	}
 
 	public void disabledPeriodic() {

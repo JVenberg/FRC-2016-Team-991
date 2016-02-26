@@ -23,11 +23,11 @@ public class OI {
 	Button trig_button = new JoystickButton(getSecondaryJoystick(), 11);
 	Button collect_button = new JoystickButton(getPrimaryJoystick(), 2);
 	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
-	
+
 	Button moveToDistance_button = new JoystickButton(getSecondaryJoystick(), 8);
-	
+
 	Button toggle_cam = new JoystickButton(getSecondaryJoystick(), 7);
-	
+
 
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect();
@@ -38,11 +38,11 @@ public class OI {
 		trig_button.whenPressed(shootGroup);
 		collect_button.toggleWhenActive(collect);
 		aim_button.whileHeld(cameraVisionProcessing);
-		
+
 		moveToDistance_button.whenPressed(new MoveToDistance(9, 1));
-		
+
 		toggle_cam.whenPressed(new SwapCamera());
-		
+
 	}
 
 	public Joystick getPrimaryJoystick() {

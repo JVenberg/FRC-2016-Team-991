@@ -29,11 +29,11 @@ public class Sucker extends Subsystem {
 	public void setSucker(Double speed) {
 		sucker.set(speed);
 	}
-	
+
 	public boolean isPressed() {
 		return !limitSwitch.get();
 	}
-	
+
 	public void stop() {
 		sucker.set(0);
 	}

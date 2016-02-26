@@ -26,13 +26,13 @@ public class LedControl extends Command {
 		switch(color){
 		case(0):
 			Robot.leds.setRed();
-			break;
+		break;
 		case(1):
 			Robot.leds.setGreen();
-			break;
+		break;
 		case(2):
 			Robot.leds.setBlue();
-			break;
+		break;
 		default:
 			Robot.leds.blink();
 		}

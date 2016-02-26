@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Rotate extends Command {
 
 	boolean active;
-	
+
 	public Rotate(boolean active) {
 		requires(Robot.rotator);
 		this.active = active;

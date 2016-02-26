@@ -19,7 +19,7 @@ public class SpinUpShooter extends Command {
 	double frontWheel, backWheel, speed;
 
 	protected void initialize() {
-		
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run

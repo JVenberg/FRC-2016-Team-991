@@ -21,8 +21,8 @@ public class Drivetrain extends Subsystem {
 	RobotDrive drive;
 	AnalogGyro gyro;
 	Encoder enc;
-	
-	
+
+
 	public Drivetrain() {
 		front_left_motor = new CANTalon(RobotMap.frontleftMotor);
 		back_left_motor = new CANTalon(RobotMap.backleftMotor);
@@ -35,12 +35,12 @@ public class Drivetrain extends Subsystem {
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
-		
+
 		gyro = new AnalogGyro(RobotMap.gyro);
 		gyro.initGyro();
 		gyro.setSensitivity(0.0021);
 		gyro.calibrate();
-		
+
 		enc = new Encoder(RobotMap.encoderA, RobotMap.encoderB, false, Encoder.EncodingType.k4X);
 		enc.setMaxPeriod(.1);
 		enc.setMinRate(10);
@@ -55,19 +55,19 @@ public class Drivetrain extends Subsystem {
 	public void stop() {
 		drive.arcadeDrive(0, 0, false);
 	}
-	
+
 	public void resetGryo() {
 		gyro.reset();
 	}
-	
+
 	public double getGyroAngle() {
 		return gyro.getAngle();
 	}
-	
+
 	public void resetEnc() {
 		enc.reset();
 	}
-	
+
 	public double getEncDistance() {
 		return enc.getDistance();
 	}
@@ -75,7 +75,7 @@ public class Drivetrain extends Subsystem {
 	public double getEncRate() {
 		return enc.getRate();
 	}
-	
+
 	public boolean isStopped() {
 		return enc.getStopped();
 	}

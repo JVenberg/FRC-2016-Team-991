@@ -10,21 +10,21 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 public class ShootGroup extends CommandGroup {
-    
-    public  ShootGroup() {
-//    	addSequential(new CameraVisionProcessing(), 1);
-    	addSequential(new SpinUpShooter(), 2);
-    	addSequential(new Shoot(), 5);
-    }
-    
-    @Override
-    public void end() {
-    	Robot.sucker.stop();
-    	Robot.flywheels.stop();
-    }
-    
-    @Override
-    public void interrupted() {
-    	end();
-    }
+
+	public  ShootGroup() {
+		// addSequential(new CameraVisionProcessing(), 1);
+		addSequential(new SpinUpShooter(), 2);
+		addSequential(new Shoot(), 5);
+	}
+
+	@Override
+	public void end() {
+		Robot.sucker.stop();
+		Robot.flywheels.stop();
+	}
+
+	@Override
+	public void interrupted() {
+		end();
+	}
 }
