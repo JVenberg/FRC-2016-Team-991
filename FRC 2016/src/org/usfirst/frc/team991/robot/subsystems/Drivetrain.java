@@ -3,11 +3,10 @@ package org.usfirst.frc.team991.robot.subsystems;
 import org.usfirst.frc.team991.robot.RobotMap;
 import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,32 +14,34 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drivetrain extends Subsystem {
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-	SpeedController front_left_motor, back_left_motor, front_right_motor, back_right_motor;
+	//Initialize controllers and sensors
+	CANTalon front_left_motor, back_left_motor, front_right_motor, back_right_motor;
 	RobotDrive drive;
-	AnalogGyro gyro;
+	ADXRS450_Gyro gyro;
 	Encoder enc;
 
 
 	public Drivetrain() {
+		//Drive motor initialization
 		front_left_motor = new CANTalon(RobotMap.frontleftMotor);
 		back_left_motor = new CANTalon(RobotMap.backleftMotor);
 		front_right_motor = new CANTalon(RobotMap.frontrightMotor);
 		back_right_motor = new CANTalon(RobotMap.backrightMotor);
 
+		//Drive system
 		drive = new RobotDrive(front_left_motor, back_left_motor, front_right_motor, back_right_motor);
 
+		//Invert drive motors
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
-		gyro = new AnalogGyro(RobotMap.gyro);
-		gyro.initGyro();
-		gyro.setSensitivity(0.0021);
+		//Gyro initialization
+		gyro = new ADXRS450_Gyro();
 		gyro.calibrate();
 
+		//Encoder initialization
 		enc = new Encoder(RobotMap.encoderA, RobotMap.encoderB, false, Encoder.EncodingType.k4X);
 		enc.setMaxPeriod(.1);
 		enc.setMinRate(10);
@@ -48,39 +49,48 @@ public class Drivetrain extends Subsystem {
 		enc.setSamplesToAverage(7);
 	}
 
+	//Sets arcade drive
 	public void arcadeDrive(double y, double rot) {
 		drive.arcadeDrive(y, rot, false);
 	}
 
+	//Stops drivetrain
 	public void stop() {
 		drive.arcadeDrive(0, 0, false);
 	}
 
+	//Resets gyro to zero
 	public void resetGryo() {
 		gyro.reset();
 	}
 
+	//Gets currect gyro angle
 	public double getGyroAngle() {
 		return gyro.getAngle();
 	}
 
+	//Resets encoder to zero
 	public void resetEnc() {
 		enc.reset();
 	}
 
+	//Gets encoder distance
 	public double getEncDistance() {
 		return enc.getDistance();
 	}
 
+	//Gets encoder velocity
 	public double getEncRate() {
 		return enc.getRate();
 	}
 
+	//Whether robot is stopped
 	public boolean isStopped() {
 		return enc.getStopped();
 	}
+	
+	//Sets the default command of subsystem
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
 		setDefaultCommand(new ArcadeDriveJoystick());
 	}
 }

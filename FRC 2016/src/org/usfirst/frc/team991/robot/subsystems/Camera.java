@@ -1,6 +1,8 @@
 package org.usfirst.frc.team991.robot.subsystems;
 
-import org.usfirst.frc.team991.robot.commands.CameraDefault;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.CamMode;
+
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
@@ -82,6 +84,6 @@ public class Camera extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new CameraDefault());
+		setDefaultCommand(new CameraVisionProcessing(CamMode.PASSIVE));
 	}
 }

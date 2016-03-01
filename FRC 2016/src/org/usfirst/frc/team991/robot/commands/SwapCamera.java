@@ -10,13 +10,29 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SwapCamera extends Command {
 
+	public enum Cam {
+		SUCKER, SHOOTER;
+	}
+	
+	Cam cam;
+	
 	public SwapCamera() {
 		requires(Robot.camera);
+	}
+	
+	public SwapCamera(Cam cam) {
+		this.cam = cam;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.camera.cycleCamera();
+		if (cam == null) {
+			Robot.camera.cycleCamera();
+		} else if (cam == Cam.SHOOTER) {
+			Robot.camera.changeCamera(0);
+		} else {
+			Robot.camera.changeCamera(1);
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run

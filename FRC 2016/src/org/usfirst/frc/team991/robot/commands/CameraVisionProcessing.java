@@ -54,25 +54,14 @@ public class CameraVisionProcessing extends Command {
 		criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, COMPACTNESS_MIN, COMPACTNESS_MAX, 0, 0);
 
 
-		//    	SmartDashboard.putNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
-		//		SmartDashboard.putNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
-		//		SmartDashboard.putNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
-		//		SmartDashboard.putNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
-		//		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
-		//		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
-		//		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+//		publishValues();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		Robot.camera.getCamera().getImage(Robot.camera.frame);
 
-		//			TOTE_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
-		//			TOTE_HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
-		//			TOTE_SAT_RANGE.minValue = (int)SmartDashboard.getNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
-		//			TOTE_SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
-		//			TOTE_VAL_RANGE.minValue = (int)SmartDashboard.getNumber("Tote val min", TOTE_VAL_RANGE.minValue);
-		//			TOTE_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+//		getValues();
 
 		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
 
@@ -168,6 +157,30 @@ public class CameraVisionProcessing extends Command {
 		targetWidth = 20.1;
 
 		return  targetWidth/(normalizedWidth*12*Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
+	}
+	
+	void publishValues() {
+		SmartDashboard.putNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
+		SmartDashboard.putNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
+		SmartDashboard.putNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
+		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+		SmartDashboard.putNumber("Compactness Min", COMPACTNESS_MIN);
+		SmartDashboard.putNumber("Compactness Max", COMPACTNESS_MAX);
+		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+	}
+	
+	void getValues() {
+		TOTE_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
+		TOTE_HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
+		TOTE_SAT_RANGE.minValue = (int)SmartDashboard.getNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
+		TOTE_SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
+		TOTE_VAL_RANGE.minValue = (int)SmartDashboard.getNumber("Tote val min", TOTE_VAL_RANGE.minValue);
+		TOTE_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+		COMPACTNESS_MIN = (double) SmartDashboard.getNumber("Compactness Min", COMPACTNESS_MIN);
+		COMPACTNESS_MAX = (double) SmartDashboard.getNumber("Compactness Max", COMPACTNESS_MAX);
+		AREA_MINIMUM = (double) SmartDashboard.getNumber("Area min %", AREA_MINIMUM);
 	}
 
 }

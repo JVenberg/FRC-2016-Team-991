@@ -19,38 +19,39 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class OI {
 
+	//Initialize joysticks
 	private Joystick joystick_0 = new Joystick(0);
 	private Joystick joystick_1 = new Joystick(1);
 
+	//Initialization of buttons
 	Button trig_button = new JoystickButton(getSecondaryJoystick(), 11);
 	Button collect_button = new JoystickButton(getPrimaryJoystick(), 2);
 	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
-
 	Button moveToDistance_button = new JoystickButton(getSecondaryJoystick(), 8);
-
 	Button toggle_cam = new JoystickButton(getSecondaryJoystick(), 7);
 
 
+	//Initialization of commands
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect(MotorMode.FORWARD);
-	public Command cameraVisionProcessing = new CameraVisionProcessing(CamMode.ACTIVE);
+	Command moveToDistance = new MoveToDistance(9, 1);
+	Command cameraVisionProcessing = new CameraVisionProcessing(CamMode.ACTIVE);
 
 
 	public OI() {
-		trig_button.whenPressed(shootGroup);
-		collect_button.toggleWhenActive(collect);
-		aim_button.whileHeld(cameraVisionProcessing);
-
-		moveToDistance_button.whenPressed(new MoveToDistance(9, 1));
-
-		toggle_cam.whenPressed(new SwapCamera());
-
+		trig_button.toggleWhenActive(shootGroup); //Toggle shooting when pressed
+		collect_button.toggleWhenActive(collect); //Toggle collecting when pressed
+		aim_button.whileHeld(cameraVisionProcessing); //Track and move shooter while held
+		moveToDistance_button.toggleWhenActive(moveToDistance); //Move robot to firing position
+		toggle_cam.whenPressed(new SwapCamera()); //Swap between camera when pressed
 	}
 
+	//Return the first joystick (Drive)
 	public Joystick getPrimaryJoystick() {
 		return joystick_0;
 	}
-
+	
+	//Return the second joystick (Actuators)
 	public Joystick getSecondaryJoystick() {
 		return joystick_1;
 	}

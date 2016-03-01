@@ -15,24 +15,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class LEDs extends Subsystem {
+	
+	//Initializes led states enum
 	public static enum LedColor {
 		RED, GREEN, BLUE, BLINK, OFF;
 	}
 	
-	
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-
+	//Initializes relays and Smartdashboard chooser
 	Relay red, green, blue;
 	public SendableChooser ledChooser;
 	private double lastSecond;
 	private LedColor color;
 
 	public LEDs() {
+		//Initializes relays
 		red = new Relay(RobotMap.redLed);
 		green = new Relay(RobotMap.greenLed);
 		blue = new Relay(RobotMap.blueLed);
 
+		//Initializes SendableChooser for Smartdashboard
 		ledChooser = new SendableChooser();
 		ledChooser.addDefault("Blink", LedColor.BLINK);
 		ledChooser.addObject("Red", LedColor.RED);
@@ -42,10 +43,12 @@ public class LEDs extends Subsystem {
 
 	}
 
+	//Sets default command for subsystem
 	public void initDefaultCommand() {
 		setDefaultCommand(new LedControl());
 	}
 
+	//Sets led color to red
 	public void setRed() {
 		color = LedColor.RED;
 		red.set(Relay.Value.kOff);
@@ -53,6 +56,7 @@ public class LEDs extends Subsystem {
 		blue.set(Relay.Value.kOn);
 	}
 
+	//Sets led color to green
 	public void setGreen() {
 		color = LedColor.GREEN;
 		red.set(Relay.Value.kOn);
@@ -60,6 +64,7 @@ public class LEDs extends Subsystem {
 		blue.set(Relay.Value.kOn);
 	}
 
+	//Sets led color to blue
 	public void setBlue() {
 		color = LedColor.BLUE;
 		red.set(Relay.Value.kOn);
@@ -67,6 +72,7 @@ public class LEDs extends Subsystem {
 		blue.set(Relay.Value.kOff);
 	}
 
+	//Turns leds off
 	public void turnOff() {
 		color = LedColor.OFF;
 		red.set(Relay.Value.kOn);
@@ -74,8 +80,10 @@ public class LEDs extends Subsystem {
 		blue.set(Relay.Value.kOn);
 	}
 
+	//Call repeatedly to blink led once every second
 	public void blink() {
-		double currentTime = (int) System.currentTimeMillis() * 0.001;
+		double currentTime = (int) System.currentTimeMillis() * 0.001; // Calculates time in seconds
+		//Switches to next color if next second
 		if (currentTime != lastSecond) {
 			switch(color) {
 			case RED:
@@ -92,7 +100,6 @@ public class LEDs extends Subsystem {
 			}
 		}
 		lastSecond = currentTime;
-
 	}
 }
 

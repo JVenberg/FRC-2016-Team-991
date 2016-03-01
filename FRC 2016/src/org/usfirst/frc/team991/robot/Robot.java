@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team991.robot.commands.groups.AutoDriveAndTurn;
+import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach;
+import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceLocation;
+import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceType;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
@@ -35,10 +37,13 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
-	//	SendableChooser chooser;
-
-	Command ledCommand;
-	SendableChooser ledChooser;
+	SendableChooser autoChooser;
+	
+	AutoDefenceLocation location;
+	SendableChooser locationChooser;
+	
+	AutoDefenceType defenceType;
+	SendableChooser defenceTypeChooser;
 
 
 
@@ -56,6 +61,26 @@ public class Robot extends IterativeRobot {
 		leds = new LEDs();
 
 		oi = new OI();
+		
+		
+		locationChooser = new SendableChooser();
+		locationChooser.addDefault("Location 1", AutoDefenceLocation.LOCATION_1);
+		locationChooser.addObject("Location 2", AutoDefenceLocation.LOCATION_2);
+		locationChooser.addObject("Location 3", AutoDefenceLocation.LOCATION_3);
+		locationChooser.addObject("Location 4", AutoDefenceLocation.LOCATION_4);
+		SmartDashboard.putData("Defence Location", locationChooser);
+		
+		defenceTypeChooser = new SendableChooser();
+		defenceTypeChooser.addDefault("Moat", AutoDefenceType.MOAT);
+		defenceTypeChooser.addObject("Ramparts", AutoDefenceType.RAMPARTS);
+		defenceTypeChooser.addObject("Rock Wall", AutoDefenceType.ROCK_WALL);
+		defenceTypeChooser.addObject("Rough Terrain", AutoDefenceType.ROUGH_TERRAIN);
+		SmartDashboard.putData("Defence Type", defenceTypeChooser);
+		
+		autoChooser = new SendableChooser();
+		autoChooser.addDefault("Defence Breach", new AutoDefenceBreach(defenceType, location));
+		autoChooser.addObject("Spybot Auto", new AutoDefenceBreach(defenceType, location));
+		SmartDashboard.putData("Auto Modes", autoChooser);
 	}
 
 	/**
@@ -81,7 +106,9 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		autonomousCommand = new AutoDriveAndTurn();
+		defenceType = (AutoDefenceType) defenceTypeChooser.getSelected();
+		location = (AutoDefenceLocation) locationChooser.getSelected();
+		autonomousCommand = (Command)autoChooser.getSelected();
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 
@@ -93,7 +120,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		SmartDashboard.putData(sucker);
 
 
 		// This makes sure that the autonomous stops running when
@@ -108,6 +134,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
+		SmartDashboard.putData(sucker);
 		Scheduler.getInstance().run();
 	}
 
