@@ -59,11 +59,11 @@ public class CameraVisionProcessing extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.camera.getCamera().getImage(Robot.camera.frame);
+		Robot.camera.getCamera().getImage(Robot.camera.getFrame());
 
 //		getValues();
 
-		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
+		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.getFrame(), 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
 
 		int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
 
@@ -91,24 +91,24 @@ public class CameraVisionProcessing extends Command {
 			double center = particles.elementAt(0).Center;
 
 			if (mode == CamMode.ACTIVE) {
-				Robot.camera.RotatePower = -(AIM_CENTER-center)/320 * 2;
+				Robot.camera.setRotatePower(-(AIM_CENTER-center)/320 * 2);
 			} else {
-				Robot.camera.RotatePower = 0;
+				Robot.camera.setRotatePower(0);
 			}
 
-			distance = computeDistance(Robot.camera.frame, particles.elementAt(0));
-			Robot.camera.distance = distance;
+			distance = computeDistance(Robot.camera.getFrame(), particles.elementAt(0));
+			Robot.camera.setDistance(distance);
 			SmartDashboard.putNumber("Distance", distance);
 
 
 			rect = new NIVision.Rect(top, left, height, width);
-			NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
+			NIVision.imaqDrawShapeOnImage(Robot.camera.getFrame(), Robot.camera.getFrame(), rect,
 					DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
 		} else {
-			Robot.camera.RotatePower = 0;
+			Robot.camera.setRotatePower(0);
 		}
 
-		Robot.camera.server.setImage(Robot.camera.frame);
+		Robot.camera.getServer().setImage(Robot.camera.getFrame());
 
 	}
 
@@ -119,7 +119,7 @@ public class CameraVisionProcessing extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.camera.RotatePower = 0;
+		Robot.camera.setRotatePower(0);
 	}
 
 	// Called when another command which requires one or more of the same

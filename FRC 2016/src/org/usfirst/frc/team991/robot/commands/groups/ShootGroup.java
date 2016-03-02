@@ -18,13 +18,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShootGroup extends CommandGroup {
 
 	public  ShootGroup() {
-		addSequential(new SwapCamera(Cam.SHOOTER));
-		addParallel(new CameraVisionProcessing(CamMode.ACTIVE), 3);
-		addParallel(new Rotate(), 3);
-		addSequential(new SpinUpShooter(), 2);
-		addSequential(new Collect(MotorMode.SHOOT), 5);
+		addSequential(new SwapCamera(Cam.SHOOTER)); //Swaps camera to shooter vision processing
+		addParallel(new CameraVisionProcessing(CamMode.ACTIVE), 3); //Starts active vision processing in parallel with next
+		addParallel(new Rotate(), 3); //Starts rotation command in parallel with vision processing to allow it to rotate
+		addSequential(new SpinUpShooter(), 3); //Spins up shooter while shooter is rotating
+		addSequential(new Collect(MotorMode.SHOOT), 5); //Starts collector to feed into shooter
 	}
 
+	//Stops all subsystems
 	@Override
 	public void end() {
 		Robot.sucker.stop();
@@ -32,6 +33,7 @@ public class ShootGroup extends CommandGroup {
 		Robot.rotator.stop();
 	}
 
+	//Ends when interrupted
 	@Override
 	public void interrupted() {
 		end();

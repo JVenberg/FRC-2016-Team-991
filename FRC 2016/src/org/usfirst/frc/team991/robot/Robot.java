@@ -27,6 +27,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	public enum AutoType {
+		BREACH_DEFENCE, SPYBOT
+	}
 
 	public static Drivetrain drivetrain;
 	public static Flywheels flywheels;
@@ -37,6 +41,8 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
+	
+	AutoType autoType;
 	SendableChooser autoChooser;
 	
 	AutoDefenceLocation location;
@@ -78,8 +84,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Defence Type", defenceTypeChooser);
 		
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Defence Breach", new AutoDefenceBreach(defenceType, location));
-		autoChooser.addObject("Spybot Auto", new AutoDefenceBreach(defenceType, location));
+		autoChooser.addDefault("Defence Breach", AutoType.BREACH_DEFENCE);
+		autoChooser.addObject("Spybot Auto", AutoType.SPYBOT);
 		SmartDashboard.putData("Auto Modes", autoChooser);
 	}
 
@@ -108,7 +114,14 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		defenceType = (AutoDefenceType) defenceTypeChooser.getSelected();
 		location = (AutoDefenceLocation) locationChooser.getSelected();
-		autonomousCommand = (Command)autoChooser.getSelected();
+		autoType = (AutoType)autoChooser.getSelected();
+		
+		if (autoType == AutoType.BREACH_DEFENCE) {
+			autonomousCommand = new AutoDefenceBreach(defenceType, location);
+		} else {
+			autonomousCommand = new AutoDefenceBreach(defenceType, location);
+		}
+		
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 
@@ -120,13 +133,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-
-
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to 
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-
 		if (autonomousCommand != null) autonomousCommand.cancel();
 	}
 

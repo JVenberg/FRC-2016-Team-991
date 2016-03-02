@@ -21,8 +21,8 @@ public class Rotate extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.camera.RotatePower != 0){
-			Robot.rotator.setSpin(Robot.camera.RotatePower);
+		if (Robot.camera.getRotatePower() != 0){
+			Robot.rotator.setSpin(Robot.camera.getRotatePower());
 		} else {
 			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.1) {
 				Robot.rotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());

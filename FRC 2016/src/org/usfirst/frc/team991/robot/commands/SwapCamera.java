@@ -46,7 +46,7 @@ public class SwapCamera extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		if (Robot.camera.camIndex == 0) {
+		if (Robot.camera.getCamIndex() == 0) {
 			new CameraVisionProcessing(CamMode.PASSIVE).start();
 		} else {
 			new CameraDefault().start();

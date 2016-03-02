@@ -23,7 +23,7 @@ public class LEDs extends Subsystem {
 	
 	//Initializes relays and Smartdashboard chooser
 	Relay red, green, blue;
-	public SendableChooser ledChooser;
+	private SendableChooser ledChooser;
 	private double lastSecond;
 	private LedColor color;
 
@@ -100,6 +100,10 @@ public class LEDs extends Subsystem {
 			}
 		}
 		lastSecond = currentTime;
+	}
+	
+	public SendableChooser getLedChooser() {
+		return ledChooser;
 	}
 }
 

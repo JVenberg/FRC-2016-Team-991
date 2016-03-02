@@ -23,7 +23,7 @@ public class LedControl extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		color = (LedColor) Robot.leds.ledChooser.getSelected();
+		color = (LedColor) Robot.leds.getLedChooser().getSelected();
 		switch(color){
 		case RED:
 			Robot.leds.setRed();

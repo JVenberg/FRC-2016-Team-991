@@ -18,7 +18,8 @@ public class Flywheels extends Subsystem {
 	double MAX_DISTANCE_RANGE = 4;
 	double DEFAULT_SPEED = .55;
 	double DEFAULT_DISTANCE = 9;
-	public double slope, intercept;
+	private double slope;
+	private double intercept;
 
 	public Flywheels() {
 		//Initializes Talons
@@ -32,8 +33,8 @@ public class Flywheels extends Subsystem {
 		back_motor.setVoltageCompensationRampRate(24.0);
 
 		//Computes slope and intercept for shooting model
-		slope = computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE);
-		intercept = computeIntercept(DEFAULT_SPEED, slope, DEFAULT_DISTANCE);
+		setSlope(computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE));
+		setIntercept(computeIntercept(DEFAULT_SPEED, getSlope(), DEFAULT_DISTANCE));
 	}
 
 	public void initDefaultCommand() {}
@@ -63,6 +64,22 @@ public class Flywheels extends Subsystem {
 	//Computes speed from shooting model
 	double computeFlywheelSpeed(double slope, double intercept, double distance) {
 		return slope * distance + intercept;
+	}
+
+	public double getSlope() {
+		return slope;
+	}
+
+	public void setSlope(double slope) {
+		this.slope = slope;
+	}
+
+	public double getIntercept() {
+		return intercept;
+	}
+
+	public void setIntercept(double intercept) {
+		this.intercept = intercept;
 	}
 
 }
