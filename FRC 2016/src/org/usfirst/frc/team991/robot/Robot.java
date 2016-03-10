@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	public enum AutoType {
-		BREACH_DEFENCE, SPYBOT
+		BREACH_DEFENCE, SPYBOT, NONE;
 	}
 
 	public static Drivetrain drivetrain;
@@ -84,7 +84,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Defence Type", defenceTypeChooser);
 		
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Defence Breach", AutoType.BREACH_DEFENCE);
+		autoChooser.addDefault("Defence Breach", AutoType.NONE);
+		autoChooser.addObject("Defence Breach", AutoType.BREACH_DEFENCE);
 		autoChooser.addObject("Spybot Auto", AutoType.SPYBOT);
 		SmartDashboard.putData("Auto Modes", autoChooser);
 	}
@@ -119,7 +120,7 @@ public class Robot extends IterativeRobot {
 		if (autoType == AutoType.BREACH_DEFENCE) {
 			autonomousCommand = new AutoDefenceBreach(defenceType, location);
 		} else {
-			autonomousCommand = new AutoDefenceBreach(defenceType, location);
+			autonomousCommand = null;
 		}
 		
 		if (autonomousCommand != null) autonomousCommand.start();

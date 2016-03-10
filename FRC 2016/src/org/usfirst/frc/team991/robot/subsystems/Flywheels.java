@@ -27,10 +27,10 @@ public class Flywheels extends Subsystem {
 		back_motor = new CANTalon(RobotMap.fly_back_motor);
 
 		//Sets mode to compensate speed based on voltage
-		front_motor.changeControlMode(TalonControlMode.Voltage);
-		back_motor.changeControlMode(TalonControlMode.Voltage);
-		front_motor.setVoltageCompensationRampRate(24.0);
-		back_motor.setVoltageCompensationRampRate(24.0);
+//		front_motor.changeControlMode(TalonControlMode.Voltage);
+//		back_motor.changeControlMode(TalonControlMode.Voltage);
+//		front_motor.setVoltageCompensationRampRate(24.0);
+//		back_motor.setVoltageCompensationRampRate(24.0);
 
 		//Computes slope and intercept for shooting model
 		setSlope(computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE));
@@ -47,8 +47,8 @@ public class Flywheels extends Subsystem {
 
 	//Sets speed of flywheels
 	public void setSpeed(double front, double back) {
-		front_motor.set(front * 12);
-		back_motor.set(back * 12);
+		front_motor.set(front);
+		back_motor.set(back);
 	}
 
 	//Computes slope of shooting model

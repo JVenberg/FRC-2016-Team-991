@@ -35,7 +35,7 @@ public class LedControl extends Command {
 			Robot.leds.setBlue();
 		break;
 		default:
-			Robot.leds.blink();
+			Robot.leds.setRed();
 		}
 	}
 

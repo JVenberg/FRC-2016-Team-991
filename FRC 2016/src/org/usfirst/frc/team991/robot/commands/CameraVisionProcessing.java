@@ -59,11 +59,11 @@ public class CameraVisionProcessing extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.camera.getCamera().getImage(Robot.camera.getFrame());
+		Robot.camera.getCamera().getImage(Robot.camera.frame);
 
 //		getValues();
 
-		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.getFrame(), 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
+		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
 
 		int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
 
@@ -96,19 +96,19 @@ public class CameraVisionProcessing extends Command {
 				Robot.camera.setRotatePower(0);
 			}
 
-			distance = computeDistance(Robot.camera.getFrame(), particles.elementAt(0));
+			distance = computeDistance(Robot.camera.frame, particles.elementAt(0));
 			Robot.camera.setDistance(distance);
 			SmartDashboard.putNumber("Distance", distance);
 
 
 			rect = new NIVision.Rect(top, left, height, width);
-			NIVision.imaqDrawShapeOnImage(Robot.camera.getFrame(), Robot.camera.getFrame(), rect,
+			NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
 					DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
 		} else {
 			Robot.camera.setRotatePower(0);
 		}
 
-		Robot.camera.getServer().setImage(Robot.camera.getFrame());
+		Robot.camera.getServer().setImage(Robot.camera.frame);
 
 	}
 

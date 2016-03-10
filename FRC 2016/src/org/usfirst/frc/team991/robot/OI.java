@@ -29,6 +29,7 @@ public class OI {
 	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
 	Button moveToDistance_button = new JoystickButton(getSecondaryJoystick(), 8);
 	Button toggle_cam = new JoystickButton(getSecondaryJoystick(), 7);
+//	Button red = new JoystickButton(getSecondaryJoystick(), 6);
 
 
 	//Initialization of commands

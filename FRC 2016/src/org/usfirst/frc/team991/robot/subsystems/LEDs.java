@@ -32,11 +32,11 @@ public class LEDs extends Subsystem {
 		red = new Relay(RobotMap.redLed);
 		green = new Relay(RobotMap.greenLed);
 		blue = new Relay(RobotMap.blueLed);
+		color = LedColor.RED;
 
 		//Initializes SendableChooser for Smartdashboard
 		ledChooser = new SendableChooser();
-		ledChooser.addDefault("Blink", LedColor.BLINK);
-		ledChooser.addObject("Red", LedColor.RED);
+		ledChooser.addDefault("Red", LedColor.RED);
 		ledChooser.addObject("Blue", LedColor.BLUE);
 		ledChooser.addObject("Green", LedColor.GREEN);
 		SmartDashboard.putData("Led Colors", ledChooser);
@@ -45,7 +45,7 @@ public class LEDs extends Subsystem {
 
 	//Sets default command for subsystem
 	public void initDefaultCommand() {
-		setDefaultCommand(new LedControl());
+//		setDefaultCommand(new LedControl());
 	}
 
 	//Sets led color to red

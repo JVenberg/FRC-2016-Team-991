@@ -4,6 +4,7 @@ import org.usfirst.frc.team991.robot.RobotMap;
 import org.usfirst.frc.team991.robot.commands.ArcadeDriveJoystick;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -17,7 +18,7 @@ public class Drivetrain extends Subsystem {
 	//Initialize controllers and sensors
 	CANTalon front_left_motor, back_left_motor, front_right_motor, back_right_motor;
 	RobotDrive drive;
-	ADXRS450_Gyro gyro;
+	AnalogGyro gyro;
 	Encoder enc;
 
 
@@ -38,7 +39,7 @@ public class Drivetrain extends Subsystem {
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
 		//Gyro initialization
-		gyro = new ADXRS450_Gyro();
+		gyro = new AnalogGyro(1);
 		gyro.calibrate();
 
 		//Encoder initialization
@@ -66,7 +67,7 @@ public class Drivetrain extends Subsystem {
 
 	//Gets currect gyro angle
 	public double getGyroAngle() {
-		return gyro.getAngle();
+		return -gyro.getAngle();
 	}
 
 	//Resets encoder to zero

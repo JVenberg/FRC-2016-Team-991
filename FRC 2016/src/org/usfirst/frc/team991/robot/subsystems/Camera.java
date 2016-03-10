@@ -17,7 +17,7 @@ public class Camera extends Subsystem {
 	
 	//Initialize camera server and buffer frame
 	private CameraServer server;
-	private Image frame;
+	public Image frame;
 
 	//Initialize rotation and distance values
 	private double RotatePower = 0;
@@ -38,7 +38,7 @@ public class Camera extends Subsystem {
 		}
 
 		// Initializes buffer frame for vision processing
-		setFrame(NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0));
+		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
 		cameras[getCamIndex()].setBrightness(0); //Sets brightness to 0
 		cameras[getCamIndex()].setExposureManual(0); //Sets exposure to 0
@@ -87,11 +87,6 @@ public class Camera extends Subsystem {
 		return cameras[getCamIndex()];
 	}
 
-	//Returns image buffer frame
-	public Image getFrame() {
-		return frame;
-	}
-
 	//Sets the default command of subsystem
 	public void initDefaultCommand() {
 		setDefaultCommand(new CameraVisionProcessing(CamMode.PASSIVE));
@@ -119,10 +114,6 @@ public class Camera extends Subsystem {
 
 	public void setRotatePower(double rotatePower) {
 		RotatePower = rotatePower;
-	}
-
-	public void setFrame(Image frame) {
-		this.frame = frame;
 	}
 
 	public CameraServer getServer() {
