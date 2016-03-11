@@ -18,7 +18,6 @@ public class Collect extends Command {
 	public Collect(MotorMode mode) {
 		this.mode = mode;
 		requires(Robot.sucker);
-		setInterruptible(true);
 	}
 
 	// Called just before this Command runs the first time
@@ -27,11 +26,7 @@ public class Collect extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (mode == MotorMode.BACKWARD) {
-			Robot.sucker.setSucker(-1.0);
-		} else {
-			Robot.sucker.setSucker(1.0);
-		}
+		Robot.sucker.setSucker(1.0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

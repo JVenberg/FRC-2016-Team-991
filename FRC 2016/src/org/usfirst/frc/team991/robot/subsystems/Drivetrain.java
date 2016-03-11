@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -39,7 +40,7 @@ public class Drivetrain extends Subsystem {
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
 		//Gyro initialization
-		gyro = new AnalogGyro(1);
+		gyro = new AnalogGyro(0);
 		gyro.calibrate();
 
 		//Encoder initialization
@@ -53,6 +54,7 @@ public class Drivetrain extends Subsystem {
 	//Sets arcade drive
 	public void arcadeDrive(double y, double rot) {
 		drive.arcadeDrive(y, rot, false);
+		SmartDashboard.putNumber("Gyro", gyro.getAngle());
 	}
 
 	//Stops drivetrain

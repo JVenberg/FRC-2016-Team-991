@@ -69,25 +69,25 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		
-		locationChooser = new SendableChooser();
-		locationChooser.addDefault("Location 1", AutoDefenceLocation.LOCATION_1);
-		locationChooser.addObject("Location 2", AutoDefenceLocation.LOCATION_2);
-		locationChooser.addObject("Location 3", AutoDefenceLocation.LOCATION_3);
-		locationChooser.addObject("Location 4", AutoDefenceLocation.LOCATION_4);
-		SmartDashboard.putData("Defence Location", locationChooser);
-		
-		defenceTypeChooser = new SendableChooser();
-		defenceTypeChooser.addDefault("Moat", AutoDefenceType.MOAT);
-		defenceTypeChooser.addObject("Ramparts", AutoDefenceType.RAMPARTS);
-		defenceTypeChooser.addObject("Rock Wall", AutoDefenceType.ROCK_WALL);
-		defenceTypeChooser.addObject("Rough Terrain", AutoDefenceType.ROUGH_TERRAIN);
-		SmartDashboard.putData("Defence Type", defenceTypeChooser);
-		
-		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Defence Breach", AutoType.NONE);
-		autoChooser.addObject("Defence Breach", AutoType.BREACH_DEFENCE);
-		autoChooser.addObject("Spybot Auto", AutoType.SPYBOT);
-		SmartDashboard.putData("Auto Modes", autoChooser);
+//		locationChooser = new SendableChooser();
+//		locationChooser.addDefault("Location 1", AutoDefenceLocation.LOCATION_1);
+//		locationChooser.addObject("Location 2", AutoDefenceLocation.LOCATION_2);
+//		locationChooser.addObject("Location 3", AutoDefenceLocation.LOCATION_3);
+//		locationChooser.addObject("Location 4", AutoDefenceLocation.LOCATION_4);
+//		SmartDashboard.putData("Defence Location", locationChooser);
+//		
+//		defenceTypeChooser = new SendableChooser();
+//		defenceTypeChooser.addDefault("Moat", AutoDefenceType.MOAT);
+//		defenceTypeChooser.addObject("Ramparts", AutoDefenceType.RAMPARTS);
+//		defenceTypeChooser.addObject("Rock Wall", AutoDefenceType.ROCK_WALL);
+//		defenceTypeChooser.addObject("Rough Terrain", AutoDefenceType.ROUGH_TERRAIN);
+//		SmartDashboard.putData("Defence Type", defenceTypeChooser);
+//		
+//		autoChooser = new SendableChooser();
+//		autoChooser.addDefault("Defence Breach", AutoType.NONE);
+//		autoChooser.addObject("Defence Breach", AutoType.BREACH_DEFENCE);
+//		autoChooser.addObject("Spybot Auto", AutoType.SPYBOT);
+//		SmartDashboard.putData("Auto Modes", autoChooser);
 	}
 
 	/**
@@ -113,16 +113,17 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		defenceType = (AutoDefenceType) defenceTypeChooser.getSelected();
-		location = (AutoDefenceLocation) locationChooser.getSelected();
-		autoType = (AutoType)autoChooser.getSelected();
+//		defenceType = (AutoDefenceType) defenceTypeChooser.getSelected();
+//		location = (AutoDefenceLocation) locationChooser.getSelected(); 
+//		autoType = (AutoType)autoChooser.getSelected();
+//		
+//		if (autoType == AutoType.BREACH_DEFENCE) {
+//			autonomousCommand = new AutoDefenceBreach(defenceType, location);
+//		} else {
+//			autonomousCommand = null;
+//		}
 		
-		if (autoType == AutoType.BREACH_DEFENCE) {
-			autonomousCommand = new AutoDefenceBreach(defenceType, location);
-		} else {
-			autonomousCommand = null;
-		}
-		
+		autonomousCommand = new AutoDefenceBreach(AutoDefenceType.ROUGH_TERRAIN, AutoDefenceLocation.LOCATION_3);
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 
@@ -142,6 +143,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		SmartDashboard.putData(sucker);
+		SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyroAngle());
 		Scheduler.getInstance().run();
 	}
 

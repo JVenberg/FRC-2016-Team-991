@@ -35,13 +35,13 @@ public class OI {
 	//Initialization of commands
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect(MotorMode.FORWARD);
-	Command moveToDistance = new MoveToDistance(9, 1);
+	Command moveToDistance = new MoveToDistance(10, 1);
 	Command cameraVisionProcessing = new CameraVisionProcessing(CamMode.ACTIVE);
 
 
 	public OI() {
 		trig_button.toggleWhenActive(shootGroup); //Toggle shooting when pressed
-		collect_button.toggleWhenActive(collect); //Toggle collecting when pressed
+		collect_button.toggleWhenActive(new Collect(MotorMode.FORWARD)); //Toggle collecting when pressed
 		aim_button.whileHeld(cameraVisionProcessing); //Track and move shooter while held
 		moveToDistance_button.toggleWhenActive(moveToDistance); //Move robot to firing position
 		toggle_cam.whenPressed(new SwapCamera()); //Swap between camera when pressed
