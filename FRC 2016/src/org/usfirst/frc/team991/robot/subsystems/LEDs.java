@@ -23,8 +23,7 @@ public class LEDs extends Subsystem {
 	
 	//Initializes relays and Smartdashboard chooser
 	Relay red, green, blue;
-	private SendableChooser ledChooser;
-	private double lastSecond;
+	public SendableChooser ledChooser;
 	private LedColor color;
 
 	public LEDs() {
@@ -45,7 +44,7 @@ public class LEDs extends Subsystem {
 
 	//Sets default command for subsystem
 	public void initDefaultCommand() {
-//		setDefaultCommand(new LedControl());
+		setDefaultCommand(new LedControl());
 	}
 
 	//Sets led color to red
@@ -78,28 +77,6 @@ public class LEDs extends Subsystem {
 		red.set(Relay.Value.kOn);
 		green.set(Relay.Value.kOn);
 		blue.set(Relay.Value.kOn);
-	}
-
-	//Call repeatedly to blink led once every second
-	public void blink() {
-		double currentTime = (int) System.currentTimeMillis() * 0.001; // Calculates time in seconds
-		//Switches to next color if next second
-		if (currentTime != lastSecond) {
-			switch(color) {
-			case RED:
-				setGreen();
-			break;
-			case GREEN:
-				setBlue();
-			break;
-			case BLUE:
-				setRed();
-			break;
-			default:
-				setRed();
-			}
-		}
-		lastSecond = currentTime;
 	}
 	
 	public SendableChooser getLedChooser() {

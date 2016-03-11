@@ -27,7 +27,7 @@ public class RobotMap {
 	public static int gyro = 1;
 
 	//Digital Input
-	public static int suckerLimitSwitch = 1;
+	public static int suckerLimitSwitch = 4;
 
 	public static int encoderA = 2;
 	public static int encoderB = 3;

@@ -44,17 +44,16 @@ public class Drivetrain extends Subsystem {
 		gyro.calibrate();
 
 		//Encoder initialization
-		enc = new Encoder(RobotMap.encoderA, RobotMap.encoderB, false, Encoder.EncodingType.k4X);
-		enc.setMaxPeriod(.1);
-		enc.setMinRate(10);
-		enc.setDistancePerPulse(5);
-		enc.setSamplesToAverage(7);
+//		enc = new Encoder(RobotMap.encoderA, RobotMap.encoderB, false, Encoder.EncodingType.k4X);
+//		enc.setMaxPeriod(.1);
+//		enc.setMinRate(10);
+//		enc.setDistancePerPulse(5);
+//		enc.setSamplesToAverage(7);
 	}
 
 	//Sets arcade drive
 	public void arcadeDrive(double y, double rot) {
 		drive.arcadeDrive(y, rot, false);
-		SmartDashboard.putNumber("Gyro", gyro.getAngle());
 	}
 
 	//Stops drivetrain

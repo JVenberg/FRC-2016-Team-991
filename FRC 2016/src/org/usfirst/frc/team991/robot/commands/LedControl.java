@@ -23,25 +23,19 @@ public class LedControl extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		color = (LedColor) Robot.leds.getLedChooser().getSelected();
-		switch(color){
-		case RED:
+		color = (LedColor) Robot.leds.ledChooser.getSelected();
+		if (color == LedColor.RED) {
 			Robot.leds.setRed();
-		break;
-		case GREEN:
+		} else if (color == LedColor.GREEN) {
 			Robot.leds.setGreen();
-		break;
-		case BLUE:
+		} else {
 			Robot.leds.setBlue();
-		break;
-		default:
-			Robot.leds.setRed();
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	// Called once after isFinished returns true

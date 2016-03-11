@@ -33,8 +33,8 @@ public class Flywheels extends Subsystem {
 //		back_motor.setVoltageCompensationRampRate(24.0);
 
 		//Computes slope and intercept for shooting model
-		setSlope(computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE));
-		setIntercept(computeIntercept(DEFAULT_SPEED, getSlope(), DEFAULT_DISTANCE));
+//		setSlope(computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE));
+//		setIntercept(computeIntercept(DEFAULT_SPEED, getSlope(), DEFAULT_DISTANCE));
 	}
 
 	public void initDefaultCommand() {}
