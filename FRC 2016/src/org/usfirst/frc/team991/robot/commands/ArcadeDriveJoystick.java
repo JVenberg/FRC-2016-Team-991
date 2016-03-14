@@ -18,7 +18,7 @@ public class ArcadeDriveJoystick extends Command {
 
 	protected void execute() {
 		Robot.drivetrain.arcadeDrive(Robot.oi.getPrimaryJoystick().getY(), Robot.oi.getPrimaryJoystick().getTwist());
-		SmartDashboard.putNumber("Distance Encoder", Robot.drivetrain.getEncDistance());
+//		SmartDashboard.putNumber("Distance Encoder", Robot.drivetrain.getEncDistance());
 	}
 
 	protected boolean isFinished() {

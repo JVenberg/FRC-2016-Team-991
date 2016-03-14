@@ -53,7 +53,7 @@ public class CameraVisionProcessing extends Command {
 		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
 		criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, COMPACTNESS_MIN, COMPACTNESS_MAX, 0, 0);
 
-
+//		AIM_CENTER = Robot.pref.getDouble("Center Aim", 170);
 //		publishValues();
 	}
 

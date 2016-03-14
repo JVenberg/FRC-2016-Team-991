@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShootGroup extends CommandGroup {
 
 	public  ShootGroup() {
-		addSequential(new SwapCamera(Cam.SHOOTER)); //Swaps camera to shooter vision processing
-		addParallel(new CameraVisionProcessing(CamMode.ACTIVE), 1); //Starts active vision processing in parallel with next
-		addParallel(new Rotate(), 1); //Starts rotation command in parallel with vision processing to allow it to rotate
+//		addSequential(new SwapCamera(Cam.SHOOTER)); //Swaps camera to shooter vision processing
+//		addParallel(new CameraVisionProcessing(CamMode.ACTIVE), 1); //Starts active vision processing in parallel with next
+//		addParallel(new Rotate(), 1); //Starts rotation command in parallel with vision processing to allow it to rotate
 		addSequential(new SpinUpShooter(), 1); //Spins up shooter while shooter is rotating
 		addSequential(new Collect(MotorMode.SHOOT), 4); //Starts collector to feed into shooter
 	}

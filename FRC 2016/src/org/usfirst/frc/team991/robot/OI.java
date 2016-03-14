@@ -27,15 +27,15 @@ public class OI {
 	Button trig_button = new JoystickButton(getSecondaryJoystick(), 11);
 	Button collect_button = new JoystickButton(getPrimaryJoystick(), 2);
 	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
-	Button moveToDistance_button = new JoystickButton(getSecondaryJoystick(), 8);
-	Button toggle_cam = new JoystickButton(getSecondaryJoystick(), 7);
+	Button moveToDistance_button = new JoystickButton(getPrimaryJoystick(), 4);
+	Button toggle_cam = new JoystickButton(getPrimaryJoystick(), 5);
 //	Button red = new JoystickButton(getSecondaryJoystick(), 6);
 
 
 	//Initialization of commands
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect(MotorMode.FORWARD);
-	Command moveToDistance = new MoveToDistance(10, 1);
+	Command moveToDistance = new MoveToDistance(8.35, 2);
 	Command cameraVisionProcessing = new CameraVisionProcessing(CamMode.ACTIVE);
 
 

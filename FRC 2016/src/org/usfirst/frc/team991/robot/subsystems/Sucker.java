@@ -30,7 +30,7 @@ public class Sucker extends Subsystem {
 
 	//Returns whether ball is in collector
 	public boolean isPressed() {
-		return !limitSwitch.get();
+		return limitSwitch.get();
 	}
 
 	//Stops collector

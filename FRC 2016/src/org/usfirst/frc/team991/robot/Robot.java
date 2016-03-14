@@ -2,12 +2,15 @@
 package org.usfirst.frc.team991.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team991.robot.commands.DriveStraight;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceLocation;
+import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceType;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Rotator;
@@ -43,6 +46,8 @@ public class Robot extends IterativeRobot {
 	
 	
 	public static SendableChooser locationChooser;
+	public static SendableChooser typeChooser;
+	public static Preferences pref;
 
 
 	/**
@@ -68,6 +73,12 @@ public class Robot extends IterativeRobot {
 		locationChooser.addObject("Location 3", AutoDefenceLocation.LOCATION_3);
 		locationChooser.addObject("Location 4", AutoDefenceLocation.LOCATION_4);
 		SmartDashboard.putData("Defence Location", locationChooser);
+		
+		typeChooser = new SendableChooser();
+		typeChooser.addDefault("Moat", AutoDefenceType.MOAT);
+		typeChooser.addObject("Rough Terrain", AutoDefenceType.ROUGH_TERRAIN);
+		typeChooser.addObject("Ramparts", AutoDefenceType.RAMPARTS);
+		SmartDashboard.putData("Defence Type", typeChooser);
 	}
 
 	/**
@@ -94,6 +105,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousInit() {
 		autonomousCommand = new AutoDefenceBreach();
+//		autonomousCommand = new DriveStraight(.6, 2.75);
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveStraight extends Command {
 
-	double Kp = .06;
+	double Kp = .09;
 	double speed, distance = -1;
 
 	public DriveStraight(double speed, double timeout) {

@@ -12,7 +12,7 @@ public class MoveToDistance extends Command {
 	double distance;
 	double Kp = .03;
 	double max_difference = 0.5;
-	double MAX_SPEED = 0.2;
+	double MAX_SPEED = 0.5;
 
 	public MoveToDistance(double distance, double timeout) {
 		setTimeout(timeout);
@@ -29,8 +29,8 @@ public class MoveToDistance extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double angle = Robot.drivetrain.getGyroAngle();
-		double calculated_speed = -(Robot.camera.getDistance() - distance)/distance * 2;
-		Robot.drivetrain.arcadeDrive(Math.max(-MAX_SPEED, Math.min(calculated_speed, MAX_SPEED)), -angle*Kp);
+		double calculated_speed = (Robot.camera.getDistance() - distance)/distance * 2;
+		Robot.drivetrain.arcadeDrive(-Math.max(-MAX_SPEED, Math.min(calculated_speed, MAX_SPEED)), -angle*Kp);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -19,6 +19,7 @@ public class Drivetrain extends Subsystem {
 	//Initialize controllers and sensors
 	CANTalon front_left_motor, back_left_motor, front_right_motor, back_right_motor;
 	RobotDrive drive;
+//	ADXRS450_Gyro gyro;
 	AnalogGyro gyro;
 	Encoder enc;
 
@@ -35,12 +36,13 @@ public class Drivetrain extends Subsystem {
 
 		//Invert drive motors
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
-		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
+		drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
 		//Gyro initialization
-		gyro = new AnalogGyro(0);
+//		gyro = new ADXRS450_Gyro();
+		gyro = new AnalogGyro(1);
 		gyro.calibrate();
 
 		//Encoder initialization
@@ -68,28 +70,28 @@ public class Drivetrain extends Subsystem {
 
 	//Gets currect gyro angle
 	public double getGyroAngle() {
-		return -gyro.getAngle();
+		return gyro.getAngle();
 	}
 
 	//Resets encoder to zero
-	public void resetEnc() {
-		enc.reset();
-	}
+//	public void resetEnc() {
+//		enc.reset();
+//	}
 
 	//Gets encoder distance
-	public double getEncDistance() {
-		return enc.getDistance();
-	}
+//	public double getEncDistance() {
+//		return enc.getDistance();
+//	}
 
-	//Gets encoder velocity
-	public double getEncRate() {
-		return enc.getRate();
-	}
+//	//Gets encoder velocity
+//	public double getEncRate() {
+//		return enc.getRate();
+//	}
 
 	//Whether robot is stopped
-	public boolean isStopped() {
-		return enc.getStopped();
-	}
+//	public boolean isStopped() {
+//		return enc.getStopped();
+//	}
 	
 	//Sets the default command of subsystem
 	public void initDefaultCommand() {
