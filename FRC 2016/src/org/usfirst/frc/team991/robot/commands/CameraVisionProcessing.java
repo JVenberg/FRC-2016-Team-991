@@ -27,9 +27,9 @@ public class CameraVisionProcessing extends Command {
 
 	CamMode mode;
 
-	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(95, 125);	//Default hue range for yellow tote
-	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(145, 255);	//Default saturation range for yellow tote
-	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(95, 255);	//Default value range for yellow tote
+	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(95, 125);	
+	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(145, 255);	
+	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(95, 255);
 
 	double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
 	double VIEW_ANGLE = 50.5; //View angle for camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
@@ -67,12 +67,10 @@ public class CameraVisionProcessing extends Command {
 
 		int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
 
-		if(numParticles > 0)
-		{
+		if(numParticles > 0) {
 			//Measure particles and sort by particle size
 			Vector<ParticleReport> particles = new Vector<ParticleReport>();
-			for(int particleIndex = 0; particleIndex < numParticles; particleIndex++)
-			{
+			for(int particleIndex = 0; particleIndex < numParticles; particleIndex++) {
 				ParticleReport par = new ParticleReport();
 				par.Area = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA);
 				par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);

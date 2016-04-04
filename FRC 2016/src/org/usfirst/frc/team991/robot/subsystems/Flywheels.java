@@ -18,23 +18,11 @@ public class Flywheels extends Subsystem {
 	double MAX_DISTANCE_RANGE = 4;
 	double DEFAULT_SPEED = .55;
 	double DEFAULT_DISTANCE = 9;
-	private double slope;
-	private double intercept;
 
 	public Flywheels() {
 		//Initializes Talons
 		front_motor = new CANTalon(RobotMap.fly_front_motor);
 		back_motor = new CANTalon(RobotMap.fly_back_motor);
-
-		//Sets mode to compensate speed based on voltage
-//		front_motor.changeControlMode(TalonControlMode.Voltage);
-//		back_motor.changeControlMode(TalonControlMode.Voltage);
-//		front_motor.setVoltageCompensationRampRate(24.0);
-//		back_motor.setVoltageCompensationRampRate(24.0);
-
-		//Computes slope and intercept for shooting model
-//		setSlope(computeSlope(MAX_SPEED_RANGE, MAX_DISTANCE_RANGE));
-//		setIntercept(computeIntercept(DEFAULT_SPEED, getSlope(), DEFAULT_DISTANCE));
 	}
 
 	public void initDefaultCommand() {}
@@ -49,37 +37,6 @@ public class Flywheels extends Subsystem {
 	public void setSpeed(double front, double back) {
 		front_motor.set(front);
 		back_motor.set(back);
-	}
-
-	//Computes slope of shooting model
-	double computeSlope(double max_speed_range, double max_distance_range) {
-		return max_speed_range/max_distance_range;
-	}
-
-	//Computes intercept of shooting model
-	double  computeIntercept(double default_speed, double slope, double default_distance) {
-		return default_speed - slope * default_distance;
-	}
-
-	//Computes speed from shooting model
-	double computeFlywheelSpeed(double slope, double intercept, double distance) {
-		return slope * distance + intercept;
-	}
-
-	public double getSlope() {
-		return slope;
-	}
-
-	public void setSlope(double slope) {
-		this.slope = slope;
-	}
-
-	public double getIntercept() {
-		return intercept;
-	}
-
-	public void setIntercept(double intercept) {
-		this.intercept = intercept;
 	}
 
 }
