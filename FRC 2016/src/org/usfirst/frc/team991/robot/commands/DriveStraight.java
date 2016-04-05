@@ -17,14 +17,7 @@ public class DriveStraight extends Command {
 		setTimeout(timeout);
 		this.speed = speed;
 	}
-
-	public DriveStraight(double speed, double timeout, double distance) {
-		requires(Robot.drivetrain);
-		setTimeout(timeout);
-		this.speed = speed;
-		this.distance = distance;
-	}
-
+	
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.drivetrain.resetGryo();
@@ -38,11 +31,7 @@ public class DriveStraight extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (distance != -1) {
-			return (Math.abs(Robot.drivetrain.getDistanceFromTarget()) <= distance || isTimedOut());
-		} else {
-			return isTimedOut();
-		}
+		return isTimedOut();
 	}
 
 	// Called once after isFinished returns true

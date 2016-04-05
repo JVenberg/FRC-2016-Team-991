@@ -88,9 +88,9 @@ public class CameraVisionProcessing extends Command {
 				double center = particles.elementAt(0).Center;
 
 				if (mode == VisionProcessingMode.ACTIVE) {
-					Robot.rotator.setVisionRotatePower(-(AIM_CENTER-center)/320 * 2);
+					Robot.turret.setVisionRotatePower(-(AIM_CENTER-center)/320 * 2);
 				} else {
-					Robot.rotator.setVisionRotatePower(0);
+					Robot.turret.setVisionRotatePower(0);
 				}
 
 				double distance = computeDistance(Robot.camera.frame, particles.elementAt(0));
@@ -102,7 +102,7 @@ public class CameraVisionProcessing extends Command {
 				NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
 						DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
 			} else {
-				Robot.rotator.setVisionRotatePower(0);
+				Robot.turret.setVisionRotatePower(0);
 			}
 		}
 
@@ -117,7 +117,7 @@ public class CameraVisionProcessing extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.rotator.setVisionRotatePower(0);
+		Robot.turret.setVisionRotatePower(0);
 	}
 
 	// Called when another command which requires one or more of the same

@@ -3,7 +3,6 @@ package org.usfirst.frc.team991.robot.subsystems;
 import org.usfirst.frc.team991.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

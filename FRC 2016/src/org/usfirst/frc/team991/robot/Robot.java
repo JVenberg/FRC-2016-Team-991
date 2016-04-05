@@ -7,13 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team991.robot.commands.DriveStraight;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceLocation;
 import org.usfirst.frc.team991.robot.commands.groups.AutoDefenceBreach.AutoDefenceType;
 import org.usfirst.frc.team991.robot.subsystems.Camera;
 import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team991.robot.subsystems.Rotator;
+import org.usfirst.frc.team991.robot.subsystems.Turret;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import org.usfirst.frc.team991.robot.subsystems.LEDs;
 import org.usfirst.frc.team991.robot.subsystems.Sucker;
@@ -37,7 +36,7 @@ public class Robot extends IterativeRobot {
 	public static Drivetrain drivetrain;
 	public static Flywheels flywheels;
 	public static Sucker sucker;
-	public static Rotator rotator;
+	public static Turret turret;
 	public static Camera camera;
 	public static LEDs leds;
 	public static OI oi;
@@ -59,7 +58,7 @@ public class Robot extends IterativeRobot {
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
 		sucker = new Sucker();
-		rotator = new Rotator();
+		turret = new Turret();
 		camera = new Camera();
 		leds = new LEDs();
 
@@ -105,7 +104,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousInit() {
 		autonomousCommand = new AutoDefenceBreach();
-//		autonomousCommand = new DriveStraight(.6, 2.75);
 		if (autonomousCommand != null) autonomousCommand.start();
 	}
 

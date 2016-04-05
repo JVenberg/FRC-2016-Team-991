@@ -79,6 +79,10 @@ public class LEDs extends Subsystem {
 		blue.set(Relay.Value.kOn);
 	}
 	
+	public LedColor getColor() {
+		return color;
+	}
+	
 	public SendableChooser getLedChooser() {
 		return ledChooser;
 	}

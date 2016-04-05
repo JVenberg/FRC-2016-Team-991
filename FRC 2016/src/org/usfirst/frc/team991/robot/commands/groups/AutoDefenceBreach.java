@@ -3,10 +3,9 @@ package org.usfirst.frc.team991.robot.commands.groups;
 import org.usfirst.frc.team991.robot.Robot;
 import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing;
 import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.VisionProcessingMode;
-import org.usfirst.frc.team991.robot.commands.SwapCamera.Cam;
 import org.usfirst.frc.team991.robot.commands.DriveStraight;
-import org.usfirst.frc.team991.robot.commands.SwapCamera;
 import org.usfirst.frc.team991.robot.commands.Turn;
+import org.usfirst.frc.team991.robot.commands.VisionMoveToDistance;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -44,7 +43,6 @@ public class AutoDefenceBreach extends CommandGroup {
 			}
 			
 			turnTime = 3;
-			alignSpeed = 0.35;
 			alignTimeout = 5;
 			alignDistance = 8.5;
 			
@@ -65,11 +63,10 @@ public class AutoDefenceBreach extends CommandGroup {
 				turnAngle = 0;
 			}
 			
-//			addSequential(new SwapCamera(Cam.SHOOTER));
 			addSequential(new DriveStraight(breachSpeed, breachTime));
 			addSequential(new Turn(turnAngle, turnTime));
 			addParallel(new CameraVisionProcessing(VisionProcessingMode.ACTIVE));
-			addSequential(new DriveStraight(alignSpeed, alignTimeout, alignDistance));
+			addSequential(new VisionMoveToDistance(alignDistance, alignTimeout));
 			addSequential(new WaitCommand(2));
 			addSequential(new ShootGroup());
 		}

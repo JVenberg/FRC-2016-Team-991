@@ -12,7 +12,7 @@ public class Rotate extends Command {
 	boolean active;
 
 	public Rotate() {
-		requires(Robot.rotator);
+		requires(Robot.turret);
 	}
 
 	// Called just before this Command runs the first time
@@ -21,13 +21,13 @@ public class Rotate extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (Robot.rotator.getVisionRotatePower() != 0){
-			Robot.rotator.setSpin(Robot.rotator.getVisionRotatePower());
+		if (Robot.turret.getVisionRotatePower() != 0){
+			Robot.turret.setSpin(Robot.turret.getVisionRotatePower());
 		} else {
 			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.1) {
-				Robot.rotator.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
+				Robot.turret.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
 			} else {
-				Robot.rotator.setSpin(0);
+				Robot.turret.setSpin(0);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ public class Rotate extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.rotator.stop();
+		Robot.turret.stop();
 	}
 
 	// Called when another command which requires one or more of the same

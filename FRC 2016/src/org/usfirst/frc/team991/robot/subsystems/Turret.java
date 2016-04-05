@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Rotator extends Subsystem {
+public class Turret extends Subsystem {
 	
-	//Initializes motor controller for shooter rotator
+	//Initializes motor controller for shooter turret
 	CANTalon spinner;
 	
 	double visionProcessingRotate = 0;
 	
-	public Rotator() {
-		//Initializes Talon for rotator
+	public Turret() {
+		//Initializes Talon for turret
 		spinner = new CANTalon(RobotMap.spinner);
 	}
 
@@ -26,12 +26,12 @@ public class Rotator extends Subsystem {
 		setDefaultCommand(new Rotate());
 	}
 
-	//Sets rotation speed of rotator
+	//Sets rotation speed of turret
 	public void setSpin(double spin) {
 		spinner.set(spin);
 	}
 
-	//Stops rotator
+	//Stops turret
 	public void stop() {
 		spinner.set(0);
 	}

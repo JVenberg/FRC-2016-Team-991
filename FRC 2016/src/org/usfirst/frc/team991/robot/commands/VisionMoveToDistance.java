@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveToDistance extends Command {
+public class VisionMoveToDistance extends Command {
 
 	double distance;
 	double Kp = .03;
 	double max_difference = 0.5;
 	double MAX_SPEED = 0.5;
 
-	public MoveToDistance(double distance, double timeout) {
+	public VisionMoveToDistance(double distance, double timeout) {
 		setTimeout(timeout);
 		requires(Robot.drivetrain);
 		this.distance = distance;
