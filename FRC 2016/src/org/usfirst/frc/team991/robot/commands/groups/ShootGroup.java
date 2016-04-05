@@ -3,6 +3,8 @@ package org.usfirst.frc.team991.robot.commands.groups;
 import org.usfirst.frc.team991.robot.Robot;
 import org.usfirst.frc.team991.robot.commands.Collect;
 import org.usfirst.frc.team991.robot.commands.Collect.MotorMode;
+import org.usfirst.frc.team991.robot.commands.LedControl;
+import org.usfirst.frc.team991.robot.commands.LedShoot;
 import org.usfirst.frc.team991.robot.commands.SpinUpShooter;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShootGroup extends CommandGroup {
 
 	public  ShootGroup() {
+		addSequential(new LedShoot());
 		addSequential(new SpinUpShooter()); //Spins up shooter while shooter is rotating
 		addSequential(new Collect(MotorMode.SHOOT), 4); //Starts collector to feed into shooter
 	}
@@ -23,6 +26,7 @@ public class ShootGroup extends CommandGroup {
 		Robot.sucker.stop();
 		Robot.flywheels.stop();
 		Robot.turret.stop();
+		new LedControl().start();
 	}
 
 	//Ends when interrupted
