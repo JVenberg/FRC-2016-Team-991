@@ -29,13 +29,13 @@ public class MoveToDistance extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double angle = Robot.drivetrain.getGyroAngle();
-		double calculated_speed = (Robot.camera.getDistance() - distance)/distance * 2;
+		double calculated_speed = (Robot.drivetrain.getDistanceFromTarget() - distance)/distance * 2;
 		Robot.drivetrain.arcadeDrive(-Math.max(-MAX_SPEED, Math.min(calculated_speed, MAX_SPEED)), -angle*Kp);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return ((Robot.camera.getDistance() - distance) <= max_difference) || isTimedOut();
+		return ((Robot.drivetrain.getDistanceFromTarget() - distance) <= max_difference) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true

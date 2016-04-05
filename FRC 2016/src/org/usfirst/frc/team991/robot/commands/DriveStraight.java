@@ -39,7 +39,7 @@ public class DriveStraight extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (distance != -1) {
-			return (Math.abs(Robot.camera.getDistance()) <= distance || isTimedOut());
+			return (Math.abs(Robot.drivetrain.getDistanceFromTarget()) <= distance || isTimedOut());
 		} else {
 			return isTimedOut();
 		}

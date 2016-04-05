@@ -22,6 +22,8 @@ public class Drivetrain extends Subsystem {
 //	ADXRS450_Gyro gyro;
 	AnalogGyro gyro;
 	Encoder enc;
+	
+	double distanceFromTarget = 0;
 
 
 	public Drivetrain() {
@@ -73,26 +75,13 @@ public class Drivetrain extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	//Resets encoder to zero
-//	public void resetEnc() {
-//		enc.reset();
-//	}
-
-	//Gets encoder distance
-//	public double getEncDistance() {
-//		return enc.getDistance();
-//	}
-
-//	//Gets encoder velocity
-//	public double getEncRate() {
-//		return enc.getRate();
-//	}
-
-	//Whether robot is stopped
-//	public boolean isStopped() {
-//		return enc.getStopped();
-//	}
+	public void setDistanceFromTarget(double distance) {
+		distanceFromTarget = distance;
+	}
 	
+	public double getDistanceFromTarget() {
+		return distanceFromTarget;
+	}
 	//Sets the default command of subsystem
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveJoystick());

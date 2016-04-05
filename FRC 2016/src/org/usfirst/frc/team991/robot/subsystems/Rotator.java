@@ -14,6 +14,8 @@ public class Rotator extends Subsystem {
 	//Initializes motor controller for shooter rotator
 	CANTalon spinner;
 	
+	double visionProcessingRotate = 0;
+	
 	public Rotator() {
 		//Initializes Talon for rotator
 		spinner = new CANTalon(RobotMap.spinner);
@@ -32,6 +34,14 @@ public class Rotator extends Subsystem {
 	//Stops rotator
 	public void stop() {
 		spinner.set(0);
+	}
+	
+	public void setVisionRotatePower(double power) {
+		visionProcessingRotate = power;
+	}
+	
+	public double getVisionRotatePower() {
+		return visionProcessingRotate;
 	}
 }
 

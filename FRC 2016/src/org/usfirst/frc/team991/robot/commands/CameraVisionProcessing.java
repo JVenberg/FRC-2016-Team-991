@@ -18,18 +18,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class CameraVisionProcessing extends Command {
-	public enum CamMode {
-		ACTIVE, PASSIVE;
+	public enum VisionProcessingMode {
+		ACTIVE, PASSIVE, OFF;
 	}
 
 	NIVision.Rect rect;
 	Image binaryFrame;
 
-	CamMode mode;
+	VisionProcessingMode mode;
 
-	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(95, 125);	
-	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(145, 255);	
-	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(95, 255);
+	NIVision.Range HUE_RANGE = new NIVision.Range(95, 125);	
+	NIVision.Range SAT_RANGE = new NIVision.Range(145, 255);	
+	NIVision.Range VAL_RANGE = new NIVision.Range(95, 255);
 
 	double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
 	double VIEW_ANGLE = 50.5; //View angle for camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
@@ -37,23 +37,21 @@ public class CameraVisionProcessing extends Command {
 	double COMPACTNESS_MAX = .50;
 	double AIM_CENTER = 170;
 
-	double distance;
-
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[2];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
 
-	public CameraVisionProcessing(CamMode mode) {
+	public CameraVisionProcessing(VisionProcessingMode mode) {
 		this.mode = mode;
 		requires(Robot.camera);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
-		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
-		criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, COMPACTNESS_MIN, COMPACTNESS_MAX, 0, 0);
-
-//		AIM_CENTER = Robot.pref.getDouble("Center Aim", 170);
+		if (mode != VisionProcessingMode.OFF) {
+			binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
+			criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
+			criteria[1] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_COMPACTNESS_FACTOR, COMPACTNESS_MIN, COMPACTNESS_MAX, 0, 0);
+		}
 //		publishValues();
 	}
 
@@ -63,47 +61,49 @@ public class CameraVisionProcessing extends Command {
 
 //		getValues();
 
-		NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE, TOTE_VAL_RANGE);
+		if (mode != VisionProcessingMode.OFF) {
+			NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, HUE_RANGE, SAT_RANGE, VAL_RANGE);
 
-		int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
+			int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
 
-		if(numParticles > 0) {
-			//Measure particles and sort by particle size
-			Vector<ParticleReport> particles = new Vector<ParticleReport>();
-			for(int particleIndex = 0; particleIndex < numParticles; particleIndex++) {
-				ParticleReport par = new ParticleReport();
-				par.Area = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA);
-				par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);
-				par.BoundingRectTop = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_TOP);
-				par.BoundingRectLeft = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_LEFT);
-				par.BoundingRectBottom = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
-				par.BoundingRectRight = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
-				par.Center = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
-				particles.add(par);
-			}
-			particles.sort(null);
-			int top = (int)particles.elementAt(0).BoundingRectTop;
-			int left = (int)particles.elementAt(0).BoundingRectLeft;
-			int width = (int)particles.elementAt(0).BoundingRectRight - left;
-			int height = (int)particles.elementAt(0).BoundingRectBottom - top;
-			double center = particles.elementAt(0).Center;
+			if(numParticles > 0) {
+				//Measure particles and sort by particle size
+				Vector<ParticleReport> particles = new Vector<ParticleReport>();
+				for(int particleIndex = 0; particleIndex < numParticles; particleIndex++) {
+					ParticleReport par = new ParticleReport();
+					par.Area = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA);
+					par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);
+					par.BoundingRectTop = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_TOP);
+					par.BoundingRectLeft = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_LEFT);
+					par.BoundingRectBottom = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
+					par.BoundingRectRight = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
+					par.Center = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
+					particles.add(par);
+				}
+				particles.sort(null);
+				int top = (int)particles.elementAt(0).BoundingRectTop;
+				int left = (int)particles.elementAt(0).BoundingRectLeft;
+				int width = (int)particles.elementAt(0).BoundingRectRight - left;
+				int height = (int)particles.elementAt(0).BoundingRectBottom - top;
+				double center = particles.elementAt(0).Center;
 
-			if (mode == CamMode.ACTIVE) {
-				Robot.camera.setRotatePower(-(AIM_CENTER-center)/320 * 2);
+				if (mode == VisionProcessingMode.ACTIVE) {
+					Robot.rotator.setVisionRotatePower(-(AIM_CENTER-center)/320 * 2);
+				} else {
+					Robot.rotator.setVisionRotatePower(0);
+				}
+
+				double distance = computeDistance(Robot.camera.frame, particles.elementAt(0));
+				Robot.drivetrain.setDistanceFromTarget(distance);;
+				SmartDashboard.putNumber("Distance", distance);
+
+
+				rect = new NIVision.Rect(top, left, height, width);
+				NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
+						DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
 			} else {
-				Robot.camera.setRotatePower(0);
+				Robot.rotator.setVisionRotatePower(0);
 			}
-
-			distance = computeDistance(Robot.camera.frame, particles.elementAt(0));
-			Robot.camera.setDistance(distance);
-			SmartDashboard.putNumber("Distance", distance);
-
-
-			rect = new NIVision.Rect(top, left, height, width);
-			NIVision.imaqDrawShapeOnImage(Robot.camera.frame, Robot.camera.frame, rect,
-					DrawMode.DRAW_VALUE, ShapeMode.SHAPE_RECT, 255);
-		} else {
-			Robot.camera.setRotatePower(0);
 		}
 
 		Robot.camera.getServer().setImage(Robot.camera.frame);
@@ -117,7 +117,7 @@ public class CameraVisionProcessing extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.camera.setRotatePower(0);
+		Robot.rotator.setVisionRotatePower(0);
 	}
 
 	// Called when another command which requires one or more of the same
@@ -158,24 +158,24 @@ public class CameraVisionProcessing extends Command {
 	}
 	
 	void publishValues() {
-		SmartDashboard.putNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
-		SmartDashboard.putNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
-		SmartDashboard.putNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
-		SmartDashboard.putNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
-		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
-		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote hue min", HUE_RANGE.minValue);
+		SmartDashboard.putNumber("Tote hue max", HUE_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote sat min", SAT_RANGE.minValue);
+		SmartDashboard.putNumber("Tote sat max", SAT_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote val min", VAL_RANGE.minValue);
+		SmartDashboard.putNumber("Tote val max", VAL_RANGE.maxValue);
 		SmartDashboard.putNumber("Compactness Min", COMPACTNESS_MIN);
 		SmartDashboard.putNumber("Compactness Max", COMPACTNESS_MAX);
 		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
 	}
 	
 	void getValues() {
-		TOTE_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
-		TOTE_HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
-		TOTE_SAT_RANGE.minValue = (int)SmartDashboard.getNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
-		TOTE_SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
-		TOTE_VAL_RANGE.minValue = (int)SmartDashboard.getNumber("Tote val min", TOTE_VAL_RANGE.minValue);
-		TOTE_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+		HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", HUE_RANGE.minValue);
+		HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote hue max", HUE_RANGE.maxValue);
+		SAT_RANGE.minValue = (int)SmartDashboard.getNumber("Tote sat min", SAT_RANGE.minValue);
+		SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote sat max", SAT_RANGE.maxValue);
+		VAL_RANGE.minValue = (int)SmartDashboard.getNumber("Tote val min", VAL_RANGE.minValue);
+		VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Tote val max", VAL_RANGE.maxValue);
 		COMPACTNESS_MIN = (double) SmartDashboard.getNumber("Compactness Min", COMPACTNESS_MIN);
 		COMPACTNESS_MAX = (double) SmartDashboard.getNumber("Compactness Max", COMPACTNESS_MAX);
 		AREA_MINIMUM = (double) SmartDashboard.getNumber("Area min %", AREA_MINIMUM);

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team991.robot.commands;
 
 import org.usfirst.frc.team991.robot.Robot;
-import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.CamMode;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.VisionProcessingMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -47,9 +47,9 @@ public class SwapCamera extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		if (Robot.camera.getCamIndex() == 0) {
-			new CameraVisionProcessing(CamMode.PASSIVE).start();
+			new CameraVisionProcessing(VisionProcessingMode.PASSIVE).start();
 		} else {
-			new CameraDefault().start();
+			new CameraVisionProcessing(VisionProcessingMode.OFF).start();
 		}
 	}
 

@@ -5,7 +5,7 @@ import org.usfirst.frc.team991.robot.commands.Collect;
 import org.usfirst.frc.team991.robot.commands.Collect.MotorMode;
 import org.usfirst.frc.team991.robot.commands.MoveToDistance;
 import org.usfirst.frc.team991.robot.commands.SwapCamera;
-import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.CamMode;
+import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.VisionProcessingMode;
 import org.usfirst.frc.team991.robot.commands.groups.ShootGroup;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,7 +36,7 @@ public class OI {
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect(MotorMode.FORWARD);
 	Command moveToDistance = new MoveToDistance(8.35, 2);
-	Command cameraVisionProcessing = new CameraVisionProcessing(CamMode.ACTIVE);
+	Command cameraVisionProcessing = new CameraVisionProcessing(VisionProcessingMode.ACTIVE);
 
 
 	public OI() {
