@@ -37,4 +37,8 @@ public class RobotMap {
 	public static int redLed = 0;
 	public static int greenLed = 1;
 	public static int blueLed = 2;
+	
+	public static int collectorArmFwd = 0;
+	public static int collectorArmRev = 1;
+	public static int collectorArmMotor = 0;
 }

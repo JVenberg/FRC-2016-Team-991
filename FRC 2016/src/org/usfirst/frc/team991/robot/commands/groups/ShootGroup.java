@@ -23,7 +23,7 @@ public class ShootGroup extends CommandGroup {
 	//Stops all subsystems
 	@Override
 	public void end() {
-		Robot.sucker.stop();
+		Robot.collector.stop();
 		Robot.flywheels.stop();
 		Robot.turret.stop();
 		new LedControl().start();

@@ -15,7 +15,8 @@ import org.usfirst.frc.team991.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team991.robot.subsystems.Turret;
 import org.usfirst.frc.team991.robot.subsystems.Flywheels;
 import org.usfirst.frc.team991.robot.subsystems.LEDs;
-import org.usfirst.frc.team991.robot.subsystems.Sucker;
+import org.usfirst.frc.team991.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team991.robot.subsystems.Collector;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,11 +36,12 @@ public class Robot extends IterativeRobot {
 
 	public static Drivetrain drivetrain;
 	public static Flywheels flywheels;
-	public static Sucker sucker;
+	public static Collector collector;
 	public static Turret turret;
 	public static Camera camera;
 	public static LEDs leds;
 	public static OI oi;
+	public static Pneumatics pneumatics;
 
 	Command autonomousCommand;
 	
@@ -57,10 +59,11 @@ public class Robot extends IterativeRobot {
 
 		flywheels = new Flywheels();
 		drivetrain = new Drivetrain();
-		sucker = new Sucker();
+		collector = new Collector();
 		turret = new Turret();
 		camera = new Camera();
 		leds = new LEDs();
+		pneumatics = new Pneumatics();
 
 		oi = new OI();
 		
@@ -115,6 +118,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
+		SmartDashboard.putBoolean("Collector On?", collector.getCurrentCommand() != null);
 		if (autonomousCommand != null) autonomousCommand.cancel();
 	}
 
@@ -122,7 +126,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		SmartDashboard.putData(sucker);
+		SmartDashboard.putData(collector);
 		SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyroAngle());
 		Scheduler.getInstance().run();
 	}
