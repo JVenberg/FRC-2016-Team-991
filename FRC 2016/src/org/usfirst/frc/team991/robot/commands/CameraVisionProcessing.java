@@ -36,6 +36,8 @@ public class CameraVisionProcessing extends Command {
 	double COMPACTNESS_MIN = .10;
 	double COMPACTNESS_MAX = .50;
 	double AIM_CENTER = 170;
+	
+	int imaqError;
 
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[2];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
@@ -65,6 +67,18 @@ public class CameraVisionProcessing extends Command {
 			NIVision.imaqColorThreshold(binaryFrame, Robot.camera.frame, 255, NIVision.ColorMode.HSV, HUE_RANGE, SAT_RANGE, VAL_RANGE);
 
 			int numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
+			SmartDashboard.putNumber("Masked particles", numParticles);
+
+			//Filter out small particles
+			criteria[0].lower = (float)SmartDashboard.getNumber("Area min %", AREA_MINIMUM);
+			criteria[1].upper = (float)SmartDashboard.getNumber("Compact max", COMPACTNESS_MAX);
+			criteria[1].lower = (float)SmartDashboard.getNumber("Compact min", COMPACTNESS_MIN);
+			
+			imaqError = NIVision.imaqParticleFilter4(binaryFrame, binaryFrame, criteria, filterOptions, null);
+
+			//Send particle count after filtering to dashboard
+			numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
+			SmartDashboard.putNumber("Filtered particles", numParticles);
 
 			if(numParticles > 0) {
 				//Measure particles and sort by particle size
@@ -72,12 +86,13 @@ public class CameraVisionProcessing extends Command {
 				for(int particleIndex = 0; particleIndex < numParticles; particleIndex++) {
 					ParticleReport par = new ParticleReport();
 					par.Area = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA);
-					par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);
 					par.BoundingRectTop = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_TOP);
 					par.BoundingRectLeft = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_LEFT);
 					par.BoundingRectBottom = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
 					par.BoundingRectRight = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
+					par.AvgWidth = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_AVERAGE_HORIZ_SEGMENT_LENGTH);
 					par.Center = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
+					
 					particles.add(par);
 				}
 				particles.sort(null);
@@ -104,6 +119,8 @@ public class CameraVisionProcessing extends Command {
 			} else {
 				Robot.turret.setVisionRotatePower(0);
 			}
+		} else {
+			Robot.turret.setVisionRotatePower(0);
 		}
 
 		Robot.camera.getServer().setImage(Robot.camera.frame);
@@ -133,6 +150,7 @@ public class CameraVisionProcessing extends Command {
 		double BoundingRectTop;
 		double BoundingRectRight;
 		double BoundingRectBottom;
+		double AvgWidth;
 		double Center;
 
 		public int compareTo(ParticleReport r)
@@ -149,10 +167,10 @@ public class CameraVisionProcessing extends Command {
 	double computeDistance(Image image, ParticleReport report) {
 		double normalizedWidth, targetWidth;
 		NIVision.GetImageSizeResult size;
-
 		size = NIVision.imaqGetImageSize(image);
-		normalizedWidth = 2*(report.BoundingRectRight - report.BoundingRectLeft)/(double)size.width;
-		targetWidth = 20.1;
+		
+		normalizedWidth = 2*(report.AvgWidth)/(double)size.width;
+		targetWidth = 20;
 
 		return  targetWidth/(normalizedWidth*12*Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
 	}

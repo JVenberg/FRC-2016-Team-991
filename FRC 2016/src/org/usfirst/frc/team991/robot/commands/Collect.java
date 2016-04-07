@@ -24,12 +24,21 @@ public class Collect extends Command {
 	protected void initialize() {
 		if (mode != MotorMode.SHOOT) {
 			Robot.collector.armDown();
+			if (mode == MotorMode.FORWARD) {
+				Robot.collector.setSucker(1.0);
+			} else {
+				Robot.collector.setSucker(-1.0);
+			}
 		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.collector.setSucker(1.0);
+		if (mode == MotorMode.BACKWARD) {
+			Robot.collector.setSucker(-1.0);
+		} else {
+			Robot.collector.setSucker(1.0);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

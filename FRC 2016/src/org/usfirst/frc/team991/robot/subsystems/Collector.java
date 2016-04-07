@@ -43,16 +43,19 @@ public class Collector extends Subsystem {
 	//Stops collector
 	public void stop() {
 		sucker.set(0);
+		collectorArmMotor.set(0);
 	}
 	
 	public void armDown() {
 		collectorArm.set(Value.kForward);
-		collectorArmMotor.set(1);
 	}
 	
 	public void armUp() {
 		collectorArm.set(Value.kReverse);
-		collectorArmMotor.set(0);
+	}
+	
+	public void setArmSpeed(double speed) {
+		collectorArmMotor.set(speed);
 	}
 }
 

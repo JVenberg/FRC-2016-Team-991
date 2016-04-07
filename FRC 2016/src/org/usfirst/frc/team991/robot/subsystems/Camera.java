@@ -40,12 +40,11 @@ public class Camera extends Subsystem {
 		cameras[camIndex].setBrightness(0); //Sets brightness to 0
 		cameras[camIndex].setExposureManual(0); //Sets exposure to 0
 		cameras[camIndex].updateSettings(); // Updates the camera settings
-		cameras[camIndex].openCamera(); // Opens camera
 		cameras[camIndex].startCapture(); // Starts capture
 
 		// Initializes camera server
-		setServer(CameraServer.getInstance());
-		getServer().setQuality(50);
+		server = CameraServer.getInstance();
+		server.setQuality(50);
 	}
 
 	public void changeCamera(int index){
@@ -66,7 +65,6 @@ public class Camera extends Subsystem {
 		if(camIndex == 0) {
 			cameras[camIndex].setBrightness(0);
 			cameras[camIndex].setExposureManual(0);
-			cameras[camIndex].updateSettings();
 		}
 
 		//Opens up new camera and starts capture
