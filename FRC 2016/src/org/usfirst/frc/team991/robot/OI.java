@@ -5,6 +5,7 @@ import org.usfirst.frc.team991.robot.commands.Collect;
 import org.usfirst.frc.team991.robot.commands.Collect.MotorMode;
 import org.usfirst.frc.team991.robot.commands.VisionMoveToDistance;
 import org.usfirst.frc.team991.robot.commands.SwapCamera;
+import org.usfirst.frc.team991.robot.commands.Turn;
 import org.usfirst.frc.team991.robot.commands.CameraVisionProcessing.VisionProcessingMode;
 import org.usfirst.frc.team991.robot.commands.groups.ShootGroup;
 
@@ -29,22 +30,25 @@ public class OI {
 	Button aim_button = new JoystickButton(getSecondaryJoystick(), 12);
 	Button moveToDistance_button = new JoystickButton(getPrimaryJoystick(), 4);
 	Button toggle_cam = new JoystickButton(getPrimaryJoystick(), 5);
+	Button turn_180 = new JoystickButton(getPrimaryJoystick(), 3);
 //	Button red = new JoystickButton(getSecondaryJoystick(), 6);
 
 
 	//Initialization of commands
 	Command shootGroup = new ShootGroup();
 	Command collect = new Collect(MotorMode.FORWARD);
-	Command moveToDistance = new VisionMoveToDistance(8.35, 2);
+	Command moveToDistance = new VisionMoveToDistance(8.35, 3.5);
 	Command cameraVisionProcessing = new CameraVisionProcessing(VisionProcessingMode.ACTIVE);
+	Command turn_180_command = new Turn(180, 9, 0);
 
 
 	public OI() {
 		trig_button.toggleWhenActive(shootGroup); //Toggle shooting when pressed
 		collect_button.toggleWhenActive(new Collect(MotorMode.FORWARD)); //Toggle collecting when pressed
 		aim_button.whileHeld(cameraVisionProcessing); //Track and move shooter while held
-		moveToDistance_button.toggleWhenActive(moveToDistance); //Move robot to firing position
+		moveToDistance_button.whileHeld(moveToDistance); //Move robot to firing position
 		toggle_cam.whenPressed(new SwapCamera()); //Swap between camera when pressed
+		turn_180.toggleWhenPressed(turn_180_command);
 	}
 
 	//Return the first joystick (Drive)

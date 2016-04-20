@@ -65,6 +65,9 @@ public class Camera extends Subsystem {
 		if(camIndex == 0) {
 			cameras[camIndex].setBrightness(0);
 			cameras[camIndex].setExposureManual(0);
+		} else {
+			cameras[camIndex].setBrightness(10);
+//			cameras[camIndex].setExposureManual(100);
 		}
 
 		//Opens up new camera and starts capture

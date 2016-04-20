@@ -11,11 +11,13 @@ public class Turn extends Command {
 
 	double Kp = 0.02;
 	double angleOfTurn;
+	double turnForward;
 
-	public Turn(double angleOfTurn, double timeout) {
+	public Turn(double angleOfTurn, double timeout, double turnForward) {
 		requires(Robot.drivetrain);
 		setTimeout(timeout);
 		this.angleOfTurn = angleOfTurn;
+		this.turnForward = turnForward;
 	}
 
 	// Called just before this Command runs the first time
@@ -26,7 +28,7 @@ public class Turn extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double currentAngle = Robot.drivetrain.getGyroAngle();
-		Robot.drivetrain.arcadeDrive(0, (angleOfTurn - currentAngle)*Kp);
+		Robot.drivetrain.arcadeDrive(turnForward, (angleOfTurn - currentAngle)*Kp);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

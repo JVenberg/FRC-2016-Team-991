@@ -47,11 +47,11 @@ public class Collector extends Subsystem {
 	}
 	
 	public void armDown() {
-		collectorArm.set(Value.kForward);
+		collectorArm.set(Value.kReverse);
 	}
 	
 	public void armUp() {
-		collectorArm.set(Value.kReverse);
+		collectorArm.set(Value.kForward);
 	}
 	
 	public void setArmSpeed(double speed) {

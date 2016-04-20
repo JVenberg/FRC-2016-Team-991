@@ -8,6 +8,8 @@ import org.usfirst.frc.team991.robot.commands.LedShoot;
 import org.usfirst.frc.team991.robot.commands.SpinUpShooter;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -15,8 +17,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShootGroup extends CommandGroup {
 
 	public  ShootGroup() {
-		addSequential(new LedShoot());
 		addSequential(new SpinUpShooter()); //Spins up shooter while shooter is rotating
+		addSequential(new WaitCommand(1));
 		addSequential(new Collect(MotorMode.SHOOT), 4); //Starts collector to feed into shooter
 	}
 

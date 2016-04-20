@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot {
 	
 	public static SendableChooser locationChooser;
 	public static SendableChooser typeChooser;
-	public static Preferences pref;
 
 
 	/**

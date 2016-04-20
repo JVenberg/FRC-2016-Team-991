@@ -27,15 +27,15 @@ public class CameraVisionProcessing extends Command {
 
 	VisionProcessingMode mode;
 
-	NIVision.Range HUE_RANGE = new NIVision.Range(95, 125);	
+	NIVision.Range HUE_RANGE = new NIVision.Range(65, 125);	
 	NIVision.Range SAT_RANGE = new NIVision.Range(145, 255);	
-	NIVision.Range VAL_RANGE = new NIVision.Range(95, 255);
+	NIVision.Range VAL_RANGE = new NIVision.Range(70, 255);
 
 	double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
 	double VIEW_ANGLE = 50.5; //View angle for camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
 	double COMPACTNESS_MIN = .10;
 	double COMPACTNESS_MAX = .50;
-	double AIM_CENTER = 170;
+	double AIM_CENTER = 110;
 	
 	int imaqError;
 
@@ -103,7 +103,7 @@ public class CameraVisionProcessing extends Command {
 				double center = particles.elementAt(0).Center;
 
 				if (mode == VisionProcessingMode.ACTIVE) {
-					Robot.turret.setVisionRotatePower(-(AIM_CENTER-center)/320 * 2);
+					Robot.turret.setVisionRotatePower(-(AIM_CENTER-center)/320 * 3);
 				} else {
 					Robot.turret.setVisionRotatePower(0);
 				}
@@ -167,10 +167,10 @@ public class CameraVisionProcessing extends Command {
 	double computeDistance(Image image, ParticleReport report) {
 		double normalizedWidth, targetWidth;
 		NIVision.GetImageSizeResult size;
+
 		size = NIVision.imaqGetImageSize(image);
-		
-		normalizedWidth = 2*(report.AvgWidth)/(double)size.width;
-		targetWidth = 20;
+		normalizedWidth = 2*(report.BoundingRectRight - report.BoundingRectLeft)/(double)size.width;
+		targetWidth = 20.1;
 
 		return  targetWidth/(normalizedWidth*12*Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
 	}

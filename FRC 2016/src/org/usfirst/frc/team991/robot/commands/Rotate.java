@@ -24,7 +24,7 @@ public class Rotate extends Command {
 		if (Robot.turret.getVisionRotatePower() != 0){
 			Robot.turret.setSpin(Robot.turret.getVisionRotatePower());
 		} else {
-			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.1) {
+			if (Math.abs(Robot.oi.getSecondaryJoystick().getTwist()) > 0.15) {
 				Robot.turret.setSpin(Robot.oi.getSecondaryJoystick().getTwist());
 			} else {
 				Robot.turret.setSpin(0);

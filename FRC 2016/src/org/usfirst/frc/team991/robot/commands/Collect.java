@@ -1,6 +1,7 @@
 package org.usfirst.frc.team991.robot.commands;
 
 import org.usfirst.frc.team991.robot.Robot;
+import org.usfirst.frc.team991.robot.commands.SwapCamera.Cam;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -25,6 +26,7 @@ public class Collect extends Command {
 		if (mode != MotorMode.SHOOT) {
 			Robot.collector.armDown();
 			if (mode == MotorMode.FORWARD) {
+				new SwapCamera(Cam.SUCKER).start();
 				Robot.collector.setSucker(1.0);
 			} else {
 				Robot.collector.setSucker(-1.0);
@@ -36,8 +38,14 @@ public class Collect extends Command {
 	protected void execute() {
 		if (mode == MotorMode.BACKWARD) {
 			Robot.collector.setSucker(-1.0);
+			if (mode != MotorMode.SHOOT) {
+				Robot.collector.setArmSpeed(-1.0);
+			}
 		} else {
 			Robot.collector.setSucker(1.0);
+			if (mode != MotorMode.SHOOT) {
+				Robot.collector.setArmSpeed(1.0);
+			}
 		}
 	}
 
@@ -55,6 +63,7 @@ public class Collect extends Command {
 	protected void end() {
 		Robot.collector.armUp();
 		Robot.collector.stop();
+		new SwapCamera(Cam.SHOOTER).start();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -25,7 +25,7 @@ public class AutoDefenceBreach extends CommandGroup {
 	}
 	
 	double breachSpeed, breachTime;
-	double turnAngle, turnTime;
+	double turnAngle, turnTime, turnForward;
 	double alignSpeed, alignTimeout, alignDistance;
 	
 	public  AutoDefenceBreach() {
@@ -43,20 +43,23 @@ public class AutoDefenceBreach extends CommandGroup {
 			}
 			
 			turnTime = 3;
-			alignTimeout = 5;
+			turnForward = 0;
+			alignTimeout = 4;
 			alignDistance = 8.5;
 			
 			if (defenceType == AutoDefenceType.MOAT) {
 				breachSpeed = -0.95;
-				turnAngle += 195;
-				breachTime = 3.8;
+				turnAngle += 185;
+				turnForward = .5;
+				breachTime = 2.9;
 			} else if (defenceType == AutoDefenceType.ROUGH_TERRAIN) {
-				breachSpeed = 0.6;
-				breachTime = 3.4;
+				breachSpeed = 0.99;
+				breachTime = 2.0;
 			} else if (defenceType == AutoDefenceType.RAMPARTS) {
-				breachSpeed = -0.75;
-				turnAngle += 195;
-				breachTime = 4.1;
+				breachSpeed = -0.99;
+				turnAngle += 185;
+				turnForward = .5;
+				breachTime = 3.0;
 			} else {
 				breachSpeed = 0;
 				breachTime = 0;
@@ -64,10 +67,10 @@ public class AutoDefenceBreach extends CommandGroup {
 			}
 			
 			addSequential(new DriveStraight(breachSpeed, breachTime));
-			addSequential(new Turn(turnAngle, turnTime));
+			addSequential(new Turn(turnAngle, turnTime, turnForward));
 			addParallel(new CameraVisionProcessing(VisionProcessingMode.ACTIVE));
 			addSequential(new VisionMoveToDistance(alignDistance, alignTimeout));
-			addSequential(new WaitCommand(2));
+			addSequential(new WaitCommand(1));
 			addSequential(new ShootGroup());
 		}
 	}

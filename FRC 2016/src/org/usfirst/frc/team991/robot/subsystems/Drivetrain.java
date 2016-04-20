@@ -57,6 +57,10 @@ public class Drivetrain extends Subsystem {
 	public void arcadeDrive(double y, double rot) {
 		drive.arcadeDrive(y, rot, false);
 	}
+	
+	public void tankDrive(double y_1, double y_2) {
+		drive.tankDrive(y_1, y_2);
+	}
 
 	//Stops drivetrain
 	public void stop() {
